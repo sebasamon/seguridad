@@ -967,6 +967,14 @@ header{
 .kpi.ind{border-left:3px solid var(--indirecta)}
 .kpi.ind .v{color:#5C6E67}
 .kpi .pct{font-family:'IBM Plex Mono',ui-monospace,'SF Mono',Consolas,monospace;font-size:11px;color:var(--ink-soft);margin-left:6px;font-weight:400}
+.kpi.wide{padding-bottom:0}
+.kpi-split{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin:9px -14px 0;
+  background:var(--rule);border-top:1px solid var(--rule)}
+.kpi-split>div{background:var(--paper-2);padding:6px 8px;text-align:center}
+.kpi-split .eyebrow{display:block;font-size:8.5px;letter-spacing:.1em}
+.kpi-split b{display:block;margin-top:2px;font-family:'Archivo','Helvetica Neue',Arial,sans-serif;
+  font-weight:800;font-size:16px;color:var(--palm);line-height:1.1}
+.kpi-split b.nop{color:#8A9A92}
 
 /* ---------- layout ---------- */
 main{max-width:1680px;margin:0 auto;padding:10px 20px 40px;
@@ -1563,6 +1571,61 @@ function unificar(rows, campos){
 }
 const CAMPOS_UNIF = ['hecho','dpto','zona','campo','actor'];
 
+/* ---- un municipio = una entidad: corrige departamento y unifica la escritura ---- */
+const DPTO_NOMBRE = (() => {
+  const t = {};
+  GEO_DEPTOS.features.forEach(f => t[f.properties.key] = f.properties.nombre);
+  return t;
+})();
+const DUENO = (() => {                       // municipio -> departamento, solo si es único
+  const cuenta = {};
+  for(const k in GEO_MUNI.exact){
+    const [d, n] = k.split('|');
+    (cuenta[n] = cuenta[n] || new Set()).add(d);
+  }
+  const t = {};
+  for(const n in cuenta) if(cuenta[n].size === 1) t[n] = [...cuenta[n]][0];
+  return t;
+})();
+let CORREGIDOS = [];
+
+function canonMunicipios(rows){
+  CORREGIDOS = [];
+  const vistos = new Set();
+  rows.forEach(r => {
+    const d = norm(r.dpto), m = canon(norm(r.muni));
+    if(!GEO_MUNI.exact[d + '|' + m]){
+      const dueno = DUENO[m];
+      if(dueno && dueno !== d && DPTO_NOMBRE[dueno]){
+        const marca = r.muni + '|' + r.dpto;
+        if(!vistos.has(marca)){ vistos.add(marca); CORREGIDOS.push([r.muni, r.dpto, DPTO_NOMBRE[dueno]]); }
+        r.dpto = DPTO_NOMBRE[dueno];
+      }
+    }
+  });
+  // agrupa por ubicación resuelta y elige un nombre canónico para cada municipio
+  const grupos = {};
+  rows.forEach(r => {
+    const p = locate(r.dpto, r.muni);
+    r.munKey = p ? p.lat.toFixed(3) + ',' + p.lon.toFixed(3) : norm(r.dpto) + '|' + norm(r.muni);
+    (grupos[r.munKey] = grupos[r.munKey] || []).push(r);
+  });
+  for(const k in grupos){
+    const cuenta = {};
+    grupos[k].forEach(r => cuenta[r.muni] = (cuenta[r.muni] || 0) + 1);
+    const nombres = Object.keys(cuenta);
+    if(nombres.length > 1){
+      nombres.sort((a,b) => (tildes(b) - tildes(a)) ||
+                            (b.length - a.length) ||
+                            (cuenta[b] - cuenta[a]) || a.localeCompare(b,'es'));
+    }
+    grupos[k].forEach(r => r.muni = nombres[0]);
+  }
+  return rows;
+}
+
+
+
 /* ============ estado ============ */
 let ALL = [], MONTH = 'ALL', GRAN = 'mes', CMP = null, SELMUNI = null, ADMIN = false, DIRTY = false, DIAG = '';
 const F = {zona:'', afec:'', campo:'', hecho:'', dpto:'', mpalm:'', dpalm:'', q:''};
@@ -1646,7 +1709,7 @@ function drawMarkers(rows){
   noGeo.clear();
   const groups = new Map();
   rows.forEach(r => {
-    const key = norm(r.dpto) + '|' + norm(r.muni);
+    const key = r.munKey || (norm(r.dpto) + '|' + norm(r.muni));
     if(!groups.has(key)) groups.set(key, {dpto:r.dpto, muni:r.muni, items:[]});
     groups.get(key).items.push(r);
   });
@@ -1738,7 +1801,7 @@ function applyFilters(rows){
     (!F.dpto  || r.dpto  === F.dpto) &&
     (!F.mpalm || r.mpalm === F.mpalm) &&
     (!F.dpalm || r.dpalm === F.dpalm) &&
-    (!SELMUNI || norm(r.dpto) + '|' + norm(r.muni) === SELMUNI) &&
+    (!SELMUNI || (r.munKey || norm(r.dpto) + '|' + norm(r.muni)) === SELMUNI) &&
     (!q || norm([r.muni,r.dpto,r.sitio,r.actor,r.fuente,r.titulo,r.desc,r.hecho].join(' ')).includes(q))
   );
 }
@@ -1767,15 +1830,32 @@ function render(){
   const dir = rows.filter(r => r.afec === 'DIRECTA').length;
   const ind = rows.length - dir;
   const pct = n => rows.length ? Math.round(n / rows.length * 100) + '%' : '0%';
+  const cobertura = (llave, bandera) => {
+    const t = {};
+    rows.forEach(r => {
+      const k = llave(r);
+      if(!t[k]) t[k] = 'NO';
+      if(r[bandera] === 'SI') t[k] = 'SI';
+    });
+    const v = Object.values(t);
+    return {tot:v.length, si:v.filter(x => x === 'SI').length, no:v.filter(x => x !== 'SI').length};
+  };
+  const cMun = cobertura(r => r.munKey || (norm(r.dpto)+'|'+norm(r.muni)), 'mpalm');
+  const cDpt = cobertura(r => norm(r.dpto), 'dpalm');
+  const split = c => `<div class="kpi-split">
+      <div><span class="eyebrow">Palmero</span><b>${c.si}</b></div>
+      <div><span class="eyebrow">No palmero</span><b class="nop">${c.no}</b></div>
+    </div>`;
   document.getElementById('kpis').innerHTML = [
-    ['Hechos registrados', rows.length, '', ''],
-    ['Afectación directa', dir, pct(dir), 'dir'],
-    ['Afectación indirecta', ind, pct(ind), 'ind'],
-    ['Municipios', new Set(rows.map(r => norm(r.dpto)+'|'+norm(r.muni))).size, '', ''],
-    ['Departamentos', new Set(rows.map(r => r.dpto)).size, '', ''],
-    ['Zonas palmeras', new Set(rows.map(r => r.zona)).size, '', '']
-  ].map(([l,v,p,c]) =>
-    `<div class="kpi ${c}"><div class="v">${v}<span class="pct">${p}</span></div><div class="l eyebrow">${l}</div></div>`
+    ['Hechos registrados', rows.length, '', '', ''],
+    ['Afectación directa', dir, pct(dir), 'dir', ''],
+    ['Afectación indirecta', ind, pct(ind), 'ind', ''],
+    ['Municipios', cMun.tot, '', 'wide', split(cMun)],
+    ['Departamentos', cDpt.tot, '', 'wide', split(cDpt)],
+    ['Zonas palmeras', new Set(rows.map(r => r.zona)).size, '', '', '']
+  ].map(([l,v,p,c,extra]) =>
+    `<div class="kpi ${c}"><div class="v">${v}<span class="pct">${p}</span></div>
+      <div class="l eyebrow">${l}</div>${extra}</div>`
   ).join('');
 
   // mapa
@@ -1783,7 +1863,7 @@ function render(){
   const bounds = drawMarkers(rows);
   drawLegend(zones, rows.length <= LIMITE_NUM);
   document.getElementById('mapcount').textContent =
-    `${new Set(rows.map(r => norm(r.muni))).size} municipios · ${rows.length} hechos` +
+    `${new Set(rows.map(r => r.munKey || norm(r.dpto)+'|'+norm(r.muni))).size} municipios · ${rows.length} hechos` +
     (rows.length > LIMITE_NUM ? ' · agrupado por municipio' : '');
   if(bounds.length && (F.zona || F.dpto || SELMUNI)){
     map.fitBounds(L.latLngBounds(bounds).pad(0.45), {maxZoom:8.5, animate:false});
@@ -1801,7 +1881,7 @@ function render(){
                  : k === 'dpalm' ? 'departamento palmero' : k, F[k], k); });
   if(F.q) add('Texto', F.q, 'q');
   if(SELMUNI){
-    const r = base.find(x => norm(x.dpto)+'|'+norm(x.muni) === SELMUNI);
+    const r = base.find(x => (x.munKey || norm(x.dpto)+'|'+norm(x.muni)) === SELMUNI);
     add('Municipio', r ? r.muni : SELMUNI, 'MUNI');
   }
   document.getElementById('chips').innerHTML =
@@ -1812,7 +1892,7 @@ function render(){
   document.getElementById('regcount').textContent = rows.length + ' de ' + base.length;
   const visibles = rows.slice(0, LIMITE_REG);
   reg.innerHTML = rows.length ? visibles.map((r,i) => `
-    <article class="item ${r.afec === 'DIRECTA' ? 'd' : ''}" data-i="${i}" data-no="${r.no}" data-key="${norm(r.dpto)+'|'+norm(r.muni)}">
+    <article class="item ${r.afec === 'DIRECTA' ? 'd' : ''}" data-i="${i}" data-no="${r.no}" data-key="${r.munKey || norm(r.dpto)+'|'+norm(r.muni)}">
       <div class="n">${r.no}</div>
       <div class="sev"></div>
       <div class="body">
@@ -1866,6 +1946,10 @@ function render(){
   // avisos
   document.getElementById('warnbox').innerHTML =
     (DIAG ? `<div class="diag"><b>Última lectura del archivo</b>${esc(DIAG)}</div>` : '') +
+    (CORREGIDOS.length ? `<div class="warn"><b>Departamentos corregidos automáticamente (${CORREGIDOS.length})</b>
+       El municipio no existe en el departamento indicado y se reasignó al que le corresponde.
+       Conviene arreglarlo en el Excel: <span class="mono">${
+       CORREGIDOS.map(([m,a,b]) => `${esc(m)}: ${esc(a)} → ${esc(b)}`).join(' · ')}</span></div>` : '') +
     (noGeo.size
     ? `<div class="warn"><b>Ubicaciones por revisar (${noGeo.size})</b>
        Estos municipios no coincidieron con el listado oficial y se ubicaron en el centro del departamento.
@@ -1882,7 +1966,7 @@ function agregarPor(rows, col){
     const k = r[col];
     t[k] = t[k] || {tot:0, d:0, i:0, mun:new Set(), zonas:{}};
     t[k].tot++; r.afec === 'DIRECTA' ? t[k].d++ : t[k].i++;
-    t[k].mun.add(norm(r.dpto)+'|'+norm(r.muni));
+    t[k].mun.add(r.munKey || norm(r.dpto)+'|'+norm(r.muni));
     t[k].zonas[r.zona] = (t[k].zonas[r.zona] || 0) + 1;
   });
   return t;
@@ -2332,7 +2416,7 @@ function renderGraficas(){
 
   /* ---- cobertura palmera: cuántos departamentos y municipios son palmeros ---- */
   document.getElementById('gPalmMode').textContent = etiquetaPer;
-  const claveMun = r => norm(r.dpto) + '|' + norm(r.muni);
+  const claveMun = r => r.munKey || (norm(r.dpto) + '|' + norm(r.muni));
   function coberturaDe(rows, llave, bandera){
     const t = {};
     rows.forEach(r => {
@@ -2585,7 +2669,7 @@ function renderAnalisis(universo){
   if(topM.length){
     B.push(`La mayor concentración municipal se presenta en <b>${topM.map(([k,v]) => `${k.split(' (')[0]} (${v})`).join(', ')}</b>,
       que suman <b>${topM.reduce((s,x) => s + x[1], 0)}</b> de los ${act.length} hechos del periodo
-      sobre un total de <b>${new Set(act.map(r => norm(r.dpto)+'|'+norm(r.muni))).size}</b> municipios con registros.`);
+      sobre un total de <b>${new Set(act.map(r => r.munKey || norm(r.dpto)+'|'+norm(r.muni))).size}</b> municipios con registros.`);
   }
 
   /* 8 · campos distintos a seguridad */
@@ -2782,7 +2866,7 @@ function loadFile(file){
         render(); return;
       }
       const meses = [...new Set(rows.map(r => r.ym))];
-      ALL = unificar(ALL.filter(r => !meses.includes(r.ym)).concat(rows), CAMPOS_UNIF)
+      ALL = canonMunicipios(unificar(ALL.filter(r => !meses.includes(r.ym)).concat(rows), CAMPOS_UNIF))
               .sort((a,b) => a.fecha - b.fecha);
       DIAG += `\nMeses incorporados: ${meses.map(ymLabel).join(', ')} (reemplazan cualquier carga previa del mismo mes).`;
       MONTH = meses.sort()[meses.length-1];
@@ -2855,6 +2939,7 @@ ALL = SEED.map((r,i) => { const d = toDate(r.fecha);
           .filter(r => r.fecha && !isNaN(r.fecha))
           .sort((a,b) => a.fecha - b.fecha);
 unificar(ALL, CAMPOS_UNIF);
+canonMunicipios(ALL);
 const ultimoMes = [...new Set(ALL.map(r => r.ym))].sort().pop();
 if(ultimoMes) MONTH = ultimoMes;
 buildMonths(); render(); renderAdminMonths();
