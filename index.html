@@ -951,6 +951,16 @@ header{
 .pcell[aria-pressed="true"]{background:var(--palm);border-color:var(--palm);color:#fff}
 .pcell[aria-pressed="true"] span{color:#CFE4D8}
 .pcell i{font-style:normal;color:var(--directa);font-size:9px;margin-left:3px}
+.pcell[data-ext]{outline:2px solid var(--ochre);outline-offset:-2px}
+.ppop-main{display:flex;flex-direction:column;min-width:0}
+.ppop-pie{display:flex;align-items:center;gap:8px;padding:8px 11px;border-top:1px solid var(--rule);
+  background:#F2F5F3;font-size:11px;color:var(--ink-soft);flex-wrap:wrap}
+.ppop-pie span{flex:1;min-width:150px}
+.pmini{background:#fff;border:1px solid var(--rule);border-radius:2px;padding:4px 10px;
+  font-family:'Archivo','Helvetica Neue',Arial,sans-serif;font-weight:700;font-size:9.5px;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft)}
+.pmini:hover{border-color:var(--palm);color:var(--palm)}
+.pmini[aria-pressed="true"]{background:var(--ochre);border-color:var(--ochre);color:#2A2008}
 .pcell[aria-pressed="true"] i{color:var(--ochre)}
 
 /* ---------- KPI strip ---------- */
@@ -1163,7 +1173,14 @@ main>*,#viewGraf>*,.gcols>*{min-width:0}
       <span class="prange" id="prange"></span>
       <div class="ppop" id="pPop" hidden role="dialog" aria-label="Seleccionar periodo">
         <div class="ppop-years" id="pYears"></div>
-        <div class="ppop-grid" id="pGrid"></div>
+        <div class="ppop-main">
+          <div class="ppop-grid" id="pGrid"></div>
+          <div class="ppop-pie">
+            <span id="pHint"></span>
+            <button class="pmini" id="pRango" aria-pressed="false">Rango</button>
+            <button class="pmini" id="pAnio">Año completo</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1351,6 +1368,38 @@ function ymCorto(k){
   const [y,m] = k.split('-'); return MESES[+m-1].slice(0,3) + ' ' + y.slice(2);
 }
 const GRANCOL = {mes:'ym', trimestre:'q', anio:'an'};
+
+/* ---- un periodo puede ser uno solo o un rango "clave..clave" ---- */
+function esRango(k){ return typeof k === 'string' && k.includes('..'); }
+function perIni(k){ return esRango(k) ? k.split('..')[0] : k; }
+function perFin(k){ return esRango(k) ? k.split('..')[1] : k; }
+function enPeriodo(valor, k){
+  if(k === 'ALL') return true;
+  if(!esRango(k)) return valor === k;
+  const [a,b] = k.split('..');
+  return valor >= a && valor <= b;
+}
+function perEtiqueta(k){
+  if(k === 'ALL') return 'todo el histórico';
+  if(!esRango(k)) return ymLabel(k);
+  const a = perIni(k), b = perFin(k);
+  if(!a.includes('-T') && a.includes('-') && a.slice(0,4) === b.slice(0,4))
+    return MESES[+a.slice(5)-1] + ' a ' + MESES[+b.slice(5)-1] + ' ' + a.slice(0,4);
+  return ymLabel(a) + ' a ' + ymLabel(b);
+}
+function perCorta(k){
+  if(k === 'ALL') return 'Todo';
+  if(!esRango(k)) return ymLabel(k);
+  return ymCorto(perIni(k)) + ' → ' + ymCorto(perFin(k));
+}
+function clavesDe(k){                        // periodos individuales que abarca la selección
+  if(k === 'ALL') return PERKEYS.slice();
+  if(!esRango(k)) return PERKEYS.includes(k) ? [k] : [];
+  const a = PERKEYS.indexOf(perIni(k)), b = PERKEYS.indexOf(perFin(k));
+  return (a < 0 || b < 0) ? [] : PERKEYS.slice(a, b + 1);
+}
+
+
 function fmtDate(d){ return String(d.getDate()).padStart(2,'0') + '-' + MESES3[d.getMonth()] + '-' + String(d.getFullYear()).slice(2); }
 function titulizar(s){
   const t = String(s || '').trim().replace(/\s+/g,' ');
@@ -1790,7 +1839,7 @@ function drawLegend(zones, numerandoAhora){
 /* ============ filtros ============ */
 function pcol(){ return GRANCOL[GRAN]; }
 function periodos(){ const c = pcol(); return [...new Set(ALL.map(r => r[c]))].sort(); }
-function monthRows(){ const c = pcol(); return MONTH === 'ALL' ? ALL : ALL.filter(r => r[c] === MONTH); }
+function monthRows(){ const c = pcol(); return MONTH === 'ALL' ? ALL : ALL.filter(r => enPeriodo(r[c], MONTH)); }
 function applyFilters(rows){
   const q = norm(F.q);
   return rows.filter(r =>
@@ -1875,7 +1924,7 @@ function render(){
   const chips = [];
   const add = (lbl,val,clear) => chips.push(
     `<span class="chip">${lbl}: <b>${esc(val)}</b><button data-clear="${clear}" aria-label="Quitar filtro">×</button></span>`);
-  if(MONTH !== 'ALL') add('Mes', ymLabel(MONTH), 'MONTH');
+  if(MONTH !== 'ALL') add(esRango(MONTH) ? 'Periodo' : 'Mes', perEtiqueta(MONTH), 'MONTH');
   ['zona','afec','campo','hecho','dpto','mpalm','dpalm'].forEach(k => {
     if(F[k]) add(k === 'afec' ? 'afectación' : k === 'mpalm' ? 'municipio palmero'
                  : k === 'dpalm' ? 'departamento palmero' : k, F[k], k); });
@@ -1946,10 +1995,6 @@ function render(){
   // avisos
   document.getElementById('warnbox').innerHTML =
     (DIAG ? `<div class="diag"><b>Última lectura del archivo</b>${esc(DIAG)}</div>` : '') +
-    (CORREGIDOS.length ? `<div class="warn"><b>Departamentos corregidos automáticamente (${CORREGIDOS.length})</b>
-       El municipio no existe en el departamento indicado y se reasignó al que le corresponde.
-       Conviene arreglarlo en el Excel: <span class="mono">${
-       CORREGIDOS.map(([m,a,b]) => `${esc(m)}: ${esc(a)} → ${esc(b)}`).join(' · ')}</span></div>` : '') +
     (noGeo.size
     ? `<div class="warn"><b>Ubicaciones por revisar (${noGeo.size})</b>
        Estos municipios no coincidieron con el listado oficial y se ubicaron en el centro del departamento.
@@ -2009,7 +2054,7 @@ function renderComparativo(){
   const filas = keys.map((k,i) => {
     const a = agg[k], prev = i ? agg[keys[i-1]] : null;
     const pctDir = a.tot ? Math.round(a.d / a.tot * 100) : 0;
-    return `<tr class="${k === MONTH ? 'sel' : ''} ${k === CMP ? 'cmp' : ''}" data-p="${k}">
+    return `<tr class="${enPeriodo(k, MONTH) && MONTH !== 'ALL' ? 'sel' : ''} ${k === CMP ? 'cmp' : ''}" data-p="${k}">
       <td><span class="per">${ymLabel(k)}</span></td>
       <td>${a.tot}</td>
       <td>${pctDelta(a.tot, prev && prev.tot)}</td>
@@ -2060,29 +2105,31 @@ function buildMonths(){
   const c = pcol(), counts = {};
   ALL.forEach(r => counts[r[c]] = (counts[r[c]] || 0) + 1);
   const keys = Object.keys(counts).sort();
-  if(MONTH !== 'ALL' && !keys.includes(MONTH)) MONTH = keys.length ? keys[keys.length-1] : 'ALL';
-  if(CMP && !keys.includes(CMP)) CMP = null;
   PERKEYS = keys; PERCOUNT = counts;
+  if(MONTH !== 'ALL' && !clavesDe(MONTH).length) MONTH = keys.length ? keys[keys.length-1] : 'ALL';
+  if(CMP && !keys.includes(CMP)) CMP = null;
 
   document.getElementById('granbox').innerHTML =
     ['mes','trimestre','anio'].map(g =>
       `<button class="gchip" data-g="${g}" aria-pressed="${g===GRAN}">${g==='anio'?'Año':g[0].toUpperCase()+g.slice(1)}</button>`).join('');
   document.getElementById('pAllN').textContent = ALL.length;
   if(ANIOSEL === null || !keys.some(k => k.slice(0,4) === ANIOSEL))
-    ANIOSEL = (MONTH !== 'ALL' ? MONTH : keys[keys.length-1] || '').slice(0,4) || null;
+    ANIOSEL = (MONTH !== 'ALL' ? perFin(MONTH) : keys[keys.length-1] || '').slice(0,4) || null;
   pintarSelector();
 }
 
-let PERKEYS = [], PERCOUNT = {}, ANIOSEL = null;
+let PERKEYS = [], PERCOUNT = {}, ANIOSEL = null, ANCLA = null;
 
 function pintarSelector(){
   const keys = PERKEYS;
-  document.getElementById('pPickTxt').textContent = MONTH === 'ALL' ? 'Elegir periodo' : ymLabel(MONTH);
-  document.getElementById('pPickN').textContent = MONTH === 'ALL' ? '' : (PERCOUNT[MONTH] || 0);
+  const sel = clavesDe(MONTH);
+  document.getElementById('pPickTxt').textContent = MONTH === 'ALL' ? 'Elegir periodo' : perEtiqueta(MONTH);
+  document.getElementById('pPickN').textContent = MONTH === 'ALL' ? ''
+    : sel.reduce((s,k) => s + (PERCOUNT[k] || 0), 0);
   document.getElementById('pAll').setAttribute('aria-pressed', MONTH === 'ALL');
-  const i = keys.indexOf(MONTH);
-  document.getElementById('pPrev').disabled = MONTH === 'ALL' || i <= 0;
-  document.getElementById('pNext').disabled = MONTH === 'ALL' || i < 0 || i >= keys.length - 1;
+  const iA = keys.indexOf(perIni(MONTH)), iB = keys.indexOf(perFin(MONTH));
+  document.getElementById('pPrev').disabled = MONTH === 'ALL' || iA <= 0;
+  document.getElementById('pNext').disabled = MONTH === 'ALL' || iB < 0 || iB >= keys.length - 1;
   document.getElementById('prange').textContent = keys.length
     ? `${keys.length} ${GRAN === 'mes' ? 'meses' : GRAN === 'trimestre' ? 'trimestres' : 'años'} · ${ymLabel(keys[0])} a ${ymLabel(keys[keys.length-1])}`
     : '';
@@ -2101,24 +2148,39 @@ function pintarSelector(){
   }else{
     celdas = MESES.map((m,i) => ({k:`${ANIOSEL}-${String(i+1).padStart(2,'0')}`, lbl:m.slice(0,3)}));
   }
+  const dentro = new Set(sel);
   document.getElementById('pGrid').innerHTML = celdas.map(x => {
     const n = PERCOUNT[x.k] || 0;
     const pdf = INFORMES && INFORMES[x.k] ? '<i title="Tiene informe adjunto">PDF</i>' : '';
-    return `<button class="pcell" data-p="${x.k}" ${n ? '' : 'disabled'} aria-pressed="${x.k===MONTH}">
+    const extremo = x.k === perIni(MONTH) || x.k === perFin(MONTH);
+    return `<button class="pcell" data-p="${x.k}" ${n ? '' : 'disabled'}
+      aria-pressed="${dentro.has(x.k) && MONTH !== 'ALL'}" ${extremo && esRango(MONTH) ? 'data-ext="1"' : ''}>
       ${x.lbl}${pdf}<span>${n || '—'}</span></button>`;
   }).join('');
+  document.getElementById('pHint').innerHTML = ANCLA
+    ? `Inicio: <b>${ymLabel(ANCLA)}</b>. Elija el periodo final del rango.`
+    : 'Clic para un periodo · <b>Mayús + clic</b> o el botón <b>Rango</b> para varios';
+  document.getElementById('pRango').setAttribute('aria-pressed', !!ANCLA);
 }
 
 function abrirPop(v){
+  if(!v) ANCLA = null;
   const pop = document.getElementById('pPop');
   pop.hidden = !v;
   document.getElementById('pPick').setAttribute('aria-expanded', v);
   if(v) pintarSelector();
 }
-function irAPeriodo(k){
-  MONTH = k; SELMUNI = null;
-  if(k !== 'ALL') ANIOSEL = k.slice(0,4);
-  abrirPop(false); render();
+function irAPeriodo(k, dejarAbierto){
+  MONTH = k; SELMUNI = null; ANCLA = null;
+  if(k !== 'ALL') ANIOSEL = perFin(k).slice(0,4);
+  if(!dejarAbierto) abrirPop(false);
+  render();
+}
+function armarRango(a, b){
+  const ia = PERKEYS.indexOf(a), ib = PERKEYS.indexOf(b);
+  if(ia < 0 || ib < 0) return a;
+  const [x, y] = ia <= ib ? [a, b] : [b, a];
+  return x === y ? x : x + '..' + y;
 }
 
 /* ============ eventos ============ */
@@ -2131,20 +2193,37 @@ document.getElementById('granbox').addEventListener('click', e => {
 document.getElementById('pPick').addEventListener('click', () =>
   abrirPop(document.getElementById('pPop').hidden));
 document.getElementById('pAll').addEventListener('click', () => irAPeriodo('ALL'));
-document.getElementById('pPrev').addEventListener('click', () => {
-  const i = PERKEYS.indexOf(MONTH); if(i > 0) irAPeriodo(PERKEYS[i-1]);
-});
-document.getElementById('pNext').addEventListener('click', () => {
-  const i = PERKEYS.indexOf(MONTH); if(i >= 0 && i < PERKEYS.length-1) irAPeriodo(PERKEYS[i+1]);
-});
+function desplazar(paso){
+  const ia = PERKEYS.indexOf(perIni(MONTH)), ib = PERKEYS.indexOf(perFin(MONTH));
+  if(ia < 0 || ib < 0) return;
+  const na = ia + paso, nb = ib + paso;
+  if(na < 0 || nb >= PERKEYS.length) return;
+  irAPeriodo(armarRango(PERKEYS[na], PERKEYS[nb]), true);
+}
+document.getElementById('pPrev').addEventListener('click', () => desplazar(-1));
+document.getElementById('pNext').addEventListener('click', () => desplazar(1));
 document.getElementById('pYears').addEventListener('click', e => {
   const y = e.target.closest('.yr'); if(!y) return;
   ANIOSEL = y.dataset.y;
-  if(GRAN === 'anio') irAPeriodo(ANIOSEL); else pintarSelector();
+  if(GRAN === 'anio' && !ANCLA) irAPeriodo(ANIOSEL); else pintarSelector();
 });
 document.getElementById('pGrid').addEventListener('click', e => {
   const c = e.target.closest('.pcell'); if(!c || c.disabled) return;
-  irAPeriodo(c.dataset.p);
+  const k = c.dataset.p;
+  if(ANCLA || e.shiftKey){
+    const ini = ANCLA || perIni(MONTH);
+    irAPeriodo(armarRango(ini, k));
+  }else{
+    irAPeriodo(k);
+  }
+});
+document.getElementById('pRango').addEventListener('click', () => {
+  ANCLA = ANCLA ? null : (MONTH === 'ALL' ? PERKEYS[0] : perIni(MONTH));
+  pintarSelector();
+});
+document.getElementById('pAnio').addEventListener('click', () => {
+  const delAnio = PERKEYS.filter(k => k.slice(0,4) === ANIOSEL);
+  if(delAnio.length) irAPeriodo(armarRango(delAnio[0], delAnio[delAnio.length-1]));
 });
 document.addEventListener('click', e => {
   if(document.getElementById('pPop').hidden) return;
@@ -2203,7 +2282,8 @@ document.getElementById('btnCsv').addEventListener('click', () => {
   )).join('\r\n');
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv;charset=utf-8'}));
-  a.download = 'monitor_seguridad_' + (MONTH === 'ALL' ? 'historico' : MONTH) + '.csv';
+  a.download = 'monitor_seguridad_' +
+    (MONTH === 'ALL' ? 'historico' : perIni(MONTH) + (esRango(MONTH) ? '_a_' + perFin(MONTH) : '')) + '.csv';
   a.click(); URL.revokeObjectURL(a.href);
 });
 
@@ -2277,8 +2357,8 @@ function renderGraficas(){
   if(VISTA !== 'graf') return;
   const universo = filasGraf();
   const col = pcol();
-  const delPeriodo = MONTH === 'ALL' ? universo : universo.filter(r => r[col] === MONTH);
-  const etiquetaPer = MONTH === 'ALL' ? 'todo el histórico' : ymLabel(MONTH);
+  const delPeriodo = MONTH === 'ALL' ? universo : universo.filter(r => enPeriodo(r[col], MONTH));
+  const etiquetaPer = perEtiqueta(MONTH);
 
   ['gZona','gAfec','gCampo','gHecho','gDpto','gMpalm','gDpalm'].forEach((id,k) =>
     fillSelect(id, ['zona','afec','campo','hecho','dpto','mpalm','dpalm'][k], ALL,
@@ -2330,7 +2410,7 @@ function renderGraficas(){
 
   /* ---- 2. serie mensual del año seleccionado ---- */
   const anioSel = MONTH === 'ALL' ? String(Math.max(...universo.map(r => +r.an)) || new Date().getFullYear())
-                                  : MONTH.slice(0,4);
+                                  : perFin(MONTH).slice(0,4);
   const serie = MESES.map((nm,i) => {
     const k = anioSel + '-' + String(i+1).padStart(2,'0');
     const f = universo.filter(r => r.ym === k);
@@ -2357,9 +2437,10 @@ function renderGraficas(){
       el archivo de ${anioPrev}. Mientras tanto la comparación disponible es entre periodos de ${anioSel},
       en la pestaña Mapa y registro.</div>`;
   }else{
+    const fin = perFin(MONTH);
     const topeMes = MONTH === 'ALL'
       ? Math.max(...universo.filter(r => r.an === anioSel).map(r => r.fecha.getMonth()+1), 12)
-      : (MONTH.includes('-T') ? +MONTH.split('-T')[1] * 3 : (MONTH.includes('-') ? +MONTH.split('-')[1] : 12));
+      : (fin.includes('-T') ? +fin.split('-T')[1] * 3 : (fin.includes('-') ? +fin.split('-')[1] : 12));
     const rangoLbl = topeMes >= 12 ? 'año completo'
                                    : 'ene-' + MESES[topeMes-1].slice(0,3).toLowerCase();
     const par = [anioPrev, anioSel].map(an => {
@@ -2530,12 +2611,14 @@ function contraer(t){                       // "de el mes" -> "del mes", "a el m
 }
 function perNombre(k){                      // "julio de 2026" / "III Trimestre de 2026" / "2026"
   if(!k) return '';
+  if(esRango(k)) return perEtiqueta(k).toLowerCase();
   if(k.includes('-T')){ const [y,t] = k.split('-T'); return ROMANO[+t-1] + ' Trimestre de ' + y; }
   if(!k.includes('-')) return k;
   const [y,m] = k.split('-'); return MESES[+m-1].toLowerCase() + ' de ' + y;
 }
 function nombrePeriodo(k){
   if(!k) return '';
+  if(esRango(k)) return 'el periodo ' + perEtiqueta(k).toLowerCase();
   if(k.includes('-T')) return 'el ' + perNombre(k);
   if(!k.includes('-')) return 'el año ' + k;
   return 'el mes de ' + perNombre(k);
@@ -2556,16 +2639,20 @@ function renderAnalisis(universo){
   }
 
   const ps = periodos();
-  const iAct = ps.indexOf(MONTH);
-  const kAnt = iAct > 0 ? ps[iAct-1] : null;
-  const act = universo.filter(r => r[col] === MONTH);
-  const ant = kAnt ? universo.filter(r => r[col] === kAnt) : [];
+  const sel = clavesDe(MONTH);
+  const iAct = ps.indexOf(sel[0]);
+  const largo = sel.length;
+  const previos = (iAct > 0) ? ps.slice(Math.max(0, iAct - largo), iAct) : [];
+  const kAnt = previos.length ? (previos.length > 1
+      ? previos[0] + '..' + previos[previos.length-1] : previos[0]) : null;
+  const act = universo.filter(r => enPeriodo(r[col], MONTH));
+  const ant = kAnt ? universo.filter(r => enPeriodo(r[col], kAnt)) : [];
   const dAct = act.filter(r => r.afec === 'DIRECTA').length;
   const dAnt = ant.filter(r => r.afec === 'DIRECTA').length;
 
   cajaTit.textContent = contraer('Análisis de ' + nombrePeriodo(MONTH));
   document.getElementById('gAnalisisMode').textContent =
-    kAnt ? 'comparado con ' + ymLabel(kAnt) : 'sin periodo anterior cargado';
+    kAnt ? 'comparado con ' + perEtiqueta(kAnt) : 'sin periodo anterior cargado';
 
   if(!act.length){
     caja.innerHTML = '<div class="empty" style="padding:26px 18px">Sin hechos para este periodo y filtros.</div>';
@@ -2615,8 +2702,10 @@ function renderAnalisis(universo){
   }
 
   /* 4 · acumulado del año frente al año anterior */
-  const anio = MONTH.slice(0,4), anioPrev = String(+anio - 1);
-  const mesTope = MONTH.includes('-T') ? +MONTH.split('-T')[1] * 3 : (MONTH.includes('-') ? +MONTH.split('-')[1] : 12);
+  const finSel = perFin(MONTH);
+  const anio = finSel.slice(0,4), anioPrev = String(+anio - 1);
+  const mesTope = finSel.includes('-T') ? +finSel.split('-T')[1] * 3
+                  : (finSel.includes('-') ? +finSel.split('-')[1] : 12);
   const hastaMes = r => (r.fecha.getMonth() + 1) <= mesTope;
   const acuA = universo.filter(r => r.an === anio && hastaMes(r));
   const acuP = universo.filter(r => r.an === anioPrev && hastaMes(r));
@@ -2788,7 +2877,7 @@ let INFORMES = {};
 try{ INFORMES = JSON.parse(document.getElementById('informes').textContent || '{}'); }catch(e){ INFORMES = {}; }
 const LIMITE_PDF = 12 * 1024 * 1024;   // 12 MB por informe
 
-function claveInforme(){ return MONTH === 'ALL' ? null : MONTH; }
+function claveInforme(){ return (MONTH === 'ALL' || esRango(MONTH)) ? null : MONTH; }
 function infoDe(k){ return k ? INFORMES[k] : null; }
 
 function actualizarInforme(){
@@ -2800,7 +2889,8 @@ function actualizarInforme(){
   const lbl = document.getElementById('lblPdf');
   const quitar = document.getElementById('btnQuitarPdf');
   if(!k){
-    lbl.textContent = 'Seleccione un periodo para adjuntar';
+    lbl.textContent = esRango(MONTH) ? 'Elija un solo mes para adjuntar el informe'
+                                     : 'Seleccione un periodo para adjuntar';
     lbl.style.opacity = '.55'; lbl.style.pointerEvents = 'none';
     quitar.hidden = true;
   }else{
