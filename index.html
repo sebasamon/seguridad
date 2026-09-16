@@ -814,7 +814,7 @@ header{
 .tab:hover{color:#DDEBE1}
 .tab[aria-pressed="true"]{color:#fff;background:#12351F;border-bottom-color:var(--ochre)}
 #viewGraf{max-width:1680px;margin:0 auto;padding:16px 20px 40px;display:grid;gap:16px}
-.gcols{display:grid;gap:16px;grid-template-columns:1fr 1fr}
+.gcols{display:grid;gap:16px;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
 @media(max-width:1050px){.gcols{grid-template-columns:1fr}}
 .gfilters .filters{border-bottom:0}
 .chartbox{padding:14px}
@@ -869,6 +869,7 @@ header{
 .gchip[aria-pressed="true"]{background:#2C6446;color:#fff}
 .gchip:hover{color:#DDEBE1}
 .cmpwrap{padding:12px 14px}
+.tablewrap{overflow-x:auto;max-width:100%}
 .cmptab{width:100%;border-collapse:collapse;font-size:12.5px}
 .cmptab th{font-family:'Archivo','Helvetica Neue',Arial,sans-serif;font-weight:700;font-size:9.5px;
   letter-spacing:.11em;text-transform:uppercase;color:var(--ink-soft);text-align:right;
@@ -970,9 +971,10 @@ header{
 /* ---------- layout ---------- */
 main{max-width:1680px;margin:0 auto;padding:10px 20px 40px;
   display:grid;gap:16px;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);align-items:start}
+main>*,#viewGraf>*,.gcols>*{min-width:0}
 @media(max-width:1050px){main{grid-template-columns:1fr}}
 
-.panel{background:var(--paper-2);border:1px solid var(--rule);border-radius:3px}
+.panel{background:var(--paper-2);border:1px solid var(--rule);border-radius:3px;min-width:0}
 .panel-h{
   display:flex;align-items:center;gap:10px;
   padding:10px 14px;border-bottom:1px solid var(--rule);
@@ -1051,9 +1053,8 @@ main{max-width:1680px;margin:0 auto;padding:10px 20px 40px;
 .tag.dir{background:#FBE6DA;color:#9A3009}
 .tag.ind{background:#E7ECE9;color:#4A5C53}
 .tag.zone{background:#E1EDE5;color:var(--palm-deep)}
-.it-d{margin-top:6px;font-size:12.5px;color:#33443C;
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.item.open .it-d{-webkit-line-clamp:unset;display:block}
+.it-d{margin-top:6px;font-size:12.5px;color:#33443C}
+.it-d .mas{color:var(--palm);font-weight:600;white-space:nowrap}
 .it-f{margin-top:5px;font-size:11px;color:#7A8B84;font-style:italic}
 .it-loc{font-family:'IBM Plex Mono',ui-monospace,'SF Mono',Consolas,monospace;font-size:11px;color:var(--palm-deep);font-weight:500}
 .empty{padding:40px 20px;text-align:center;color:var(--ink-soft)}
@@ -1342,6 +1343,15 @@ function titulizar(s){
   return t.split(' ').map(w => w.length > 2
     ? w[0].toLocaleUpperCase('es') + w.slice(1).toLocaleLowerCase('es')
     : (w === w.toUpperCase() ? w : w.toLocaleLowerCase('es'))).join(' ');
+}
+const LARGO_DESC = 190;
+function recorte(t){
+  const x = String(t || '').replace(/\s+/g, ' ').trim();
+  if(x.length <= LARGO_DESC) return esc(x);
+  let corte = x.lastIndexOf(' ', LARGO_DESC);
+  if(corte < LARGO_DESC * 0.6) corte = LARGO_DESC;
+  return `<span class="corto">${esc(x.slice(0, corte))}… <span class="mas">ver más</span></span>` +
+         `<span class="largo" hidden>${esc(x)}</span>`;
 }
 function esc(s){ return String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 
@@ -1747,7 +1757,7 @@ function render(){
           ${r.sitio ? '<span>· ' + esc(r.sitio) + '</span>' : ''}
           ${r.actor ? '<span>· actor: ' + esc(r.actor) + '</span>' : ''}
         </div>
-        ${r.desc ? `<div class="it-d">${esc(r.desc)}</div>` : ''}
+        ${r.desc ? `<div class="it-d">${recorte(r.desc)}</div>` : ''}
         ${r.fuente ? `<div class="it-f">Fuente: ${esc(r.fuente)}</div>` : ''}
       </div>
     </article>`).join('')
@@ -1878,7 +1888,7 @@ function renderComparativo(){
   }).join('');
 
   document.getElementById('cmp').innerHTML = `
-    <div class="cmpwrap">
+    <div class="cmpwrap"><div class="tablewrap">
       <table class="cmptab">
         <thead><tr>
           <th>Periodo</th><th>Hechos</th><th>Var.</th><th>Directa</th><th>% dir.</th>
@@ -1886,11 +1896,11 @@ function renderComparativo(){
         </tr></thead>
         <tbody>${filas}</tbody>
       </table>
-    </div>
+    </div></div>
     <div class="cmphint">Clic en una fila para ver ese periodo en el mapa. La variación compara contra el periodo inmediatamente anterior.</div>
     <div class="cmpzona">
       <div class="eyebrow" style="margin-bottom:7px">Hechos por zona palmera en cada periodo</div>
-      <table><thead><tr><th>Zona</th>${cabZ}<th>Últ. var.</th></tr></thead><tbody>${filasZ}</tbody></table>
+      <div class="tablewrap"><table><thead><tr><th>Zona</th>${cabZ}<th>Últ. var.</th></tr></thead><tbody>${filasZ}</tbody></table></div>
     </div>`;
 }
 
@@ -2006,6 +2016,8 @@ document.getElementById('chips').addEventListener('click', e => {
 document.getElementById('reg').addEventListener('click', e => {
   const it = e.target.closest('.item'); if(!it) return;
   it.classList.toggle('open');
+  const c = it.querySelector('.corto'), l = it.querySelector('.largo');
+  if(c && l){ const abierto = it.classList.contains('open'); c.hidden = abierto; l.hidden = !abierto; }
 });
 let lastHl = null;
 function quitarHl(){
@@ -2141,7 +2153,7 @@ function renderGraficas(){
   const totA = porZona.reduce((s,x) => s + x.a, 0), totD = porZona.reduce((s,x) => s + x.d, 0);
   document.getElementById('gResumen').innerHTML = porZona.length ? `
     <div class="resumen2">
-      <div class="r-tabla">
+      <div class="r-tabla"><div class="tablewrap">
         <table class="gtab">
           <thead><tr><th>Zona</th><th>Acciones</th><th>% del total</th><th>Afectación directa</th><th>% de afectación</th></tr></thead>
           <tbody>
@@ -2152,7 +2164,7 @@ function renderGraficas(){
               <td class="pc">${totA ? Math.round(totD/totA*100) : 0}%</td></tr>
           </tbody>
         </table>
-      </div>
+      </div></div>
       <div class="r-chart">
         ${svgBarrasV(porZona.map(x => ({lbl:x.z, a:x.a, b:x.d})), {alto:250, W:560})}
         ${leyenda([['#4C9A6B','Acciones registradas'],['#C2410C','Afectación directa a palmicultores']])}
@@ -2258,7 +2270,7 @@ function renderGraficas(){
   const aA = acum.reduce((s,x) => s + x.a, 0), aD = acum.reduce((s,x) => s + x.d, 0);
   const mayorPc = acum.slice().sort((a,b) => b.pc - a.pc)[0];
   document.getElementById('gAcum').innerHTML = acum.length ? `
-    <div class="chartbox" style="padding-bottom:4px">
+    <div class="chartbox" style="padding-bottom:4px"><div class="tablewrap">
       <table class="gtab">
         <thead><tr><th>Zona</th><th>No. acciones</th><th>%</th><th>No. afectación</th><th>%</th><th>Hechos vs afectación</th></tr></thead>
         <tbody>
@@ -2268,7 +2280,7 @@ function renderGraficas(){
             <td class="pc">${aA ? Math.round(aD/aA*100) : 0}%</td></tr>
         </tbody>
       </table>
-    </div>
+    </div></div>
     <div class="nota">Acumulado ${anioSel}: <b>${esc(acum[0].z)}</b> concentra el mayor número de hechos
       (${acum[0].a}). En relación hechos-afectaciones, <b>${esc(mayorPc.z)}</b> presenta el mayor porcentaje
       de afectación directa (${mayorPc.pc}%).</div>`
