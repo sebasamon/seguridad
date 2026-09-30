@@ -882,6 +882,51 @@ header{
 .expk .d b{color:var(--directa)}
 .nota{padding:0 14px 13px;font-size:11.5px;color:var(--ink-soft);line-height:1.5}
 .nota b{color:var(--ink)}
+.fbar{background:#F1F1EA;color:var(--ink);border-bottom:1px solid var(--rule);box-shadow:0 3px 10px -8px rgba(0,0,0,.35)}
+.fbar-in{max-width:1680px;margin:0 auto;padding:6px 20px 8px}
+.fbar-top{display:flex;align-items:center;gap:12px;min-height:26px}
+.ftoggle{display:inline-flex;align-items:center;gap:7px;background:var(--palm);color:#fff;border:0;border-radius:2px;
+  padding:6px 12px;font-family:'Archivo','Helvetica Neue',Arial,sans-serif;font-weight:700;font-size:11px;
+  letter-spacing:.08em;text-transform:uppercase;flex:none}
+.ftoggle:hover{background:var(--palm-deep)}
+.ftoggle b{background:var(--ochre);color:#2A1E05;border-radius:9px;padding:0 7px;font-size:10.5px;min-width:18px;text-align:center}
+.ftoggle b:empty{display:none}
+.fbar .chipbar{padding:0;flex:1;min-width:0}
+.fbar .filters{padding:6px 0 0;border:0;grid-template-columns:repeat(auto-fill,minmax(122px,1fr));gap:6px 8px}
+.fbar .field label{font-size:8.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fbar .field select,.fbar .field input{padding:5px 7px;font-size:12px}
+.fbar.cerrada .filters{display:none}
+@media(max-width:1199px){ header{position:static} .mapwrap{position:static} }
+.combo{position:relative}
+.combo-sel{display:none!important}
+.combo-in{width:100%;min-width:0;font:inherit;font-size:12px;padding:5px 24px 5px 7px;border:1px solid var(--rule);
+  border-radius:2px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%235A6152' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 8px center;
+  color:var(--ink);text-overflow:ellipsis}
+.combo-in::placeholder{color:var(--ink)}
+.combo.lleno .combo-in{border-color:var(--palm);background-color:#F4F5EC;font-weight:600}
+.combo-x{position:absolute;right:20px;top:50%;transform:translateY(-50%);background:none;border:0;padding:0 4px;
+  font-size:14px;line-height:1;color:var(--ink-soft);display:none}
+.combo.lleno .combo-x{display:block}
+.combo-x:hover{color:var(--directa)}
+.combo-list{position:absolute;left:0;top:calc(100% + 2px);z-index:1600;min-width:100%;width:max-content;max-width:340px;
+  max-height:290px;overflow-y:auto;background:#fff;border:1px solid var(--rule);border-radius:3px;
+  box-shadow:0 10px 26px rgba(0,0,0,.22);padding:3px 0}
+.combo-op{padding:6px 10px;font-size:12px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.combo-op.act,.combo-op:hover{background:#EEF0E2}
+.combo-op.sel{font-weight:700;color:var(--palm)}
+.combo-op mark{background:#F6E2B3;color:inherit;padding:0}
+.combo-vacio{padding:8px 10px;font-size:12px;color:var(--ink-soft)}
+.fechas{display:inline-flex;align-items:center;gap:6px;border:1px solid #5E6A26;border-radius:2px;padding:3px 8px;
+  background:#3B4426}
+.fechas-lbl{font-family:'Archivo','Helvetica Neue',Arial,sans-serif;font-weight:700;font-size:10px;
+  letter-spacing:.1em;text-transform:uppercase;color:#C3C8A6}
+.fechas-a{font-size:11px;color:#C3C8A6}
+.fechas input{font:inherit;font-size:12px;padding:3px 5px;border:1px solid transparent;border-radius:2px;
+  background:#F5F5F0;color:var(--ink);width:128px;color-scheme:light}
+.fechas.activas{background:var(--ochre);border-color:var(--ochre)}
+.fechas.activas .fechas-lbl,.fechas.activas .fechas-a{color:#2A1E05}
+.fechas.activas input{font-weight:700}
+@media(max-width:560px){.fechas{flex-basis:100%}.fechas input{flex:1;width:auto;min-width:0}}
 .granbox{display:inline-flex;align-self:center;margin-right:14px;border:1px solid #5E6A26;border-radius:2px;overflow:hidden}
 .gchip{background:transparent;border:0;padding:5px 11px;color:#A3AA85;
   font-family:'Archivo','Helvetica Neue',Arial,sans-serif;font-weight:600;font-size:10px;
@@ -997,7 +1042,7 @@ header{
 .kpi.ind{border-left:3px solid var(--indirecta)}
 .kpi.ind .v{color:#5C6E67}
 .kpi .pct{font-family:'IBM Plex Mono',ui-monospace,'SF Mono',Consolas,monospace;font-size:11px;color:var(--ink-soft);margin-left:6px;font-weight:400}
-.kpi.wide{padding-bottom:0}
+.kpi.wide{padding-bottom:0;text-align:center}
 .kpi-split{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin:9px -14px 0;
   background:var(--rule);border-top:1px solid var(--rule)}
 .kpi-split>div{background:var(--paper-2);padding:6px 8px;text-align:center}
@@ -1022,7 +1067,7 @@ main>*,#viewGraf>*,.gcols>*{min-width:0}
 .panel-h .count{margin-left:auto;font-family:'IBM Plex Mono',ui-monospace,'SF Mono',Consolas,monospace;font-size:11px;color:var(--ink-soft)}
 
 /* ---------- map ---------- */
-.mapwrap{position:sticky;top:118px}
+.mapwrap{position:sticky;top:calc(var(--hdr,118px) + 10px)}
 @media(max-width:1050px){.mapwrap{position:static}}
 #map{height:620px;background:#EFEFE8;border-radius:0 0 3px 3px}
 @media(max-width:640px){#map{height:420px}}
@@ -1195,6 +1240,12 @@ main>*,#viewGraf>*,.gcols>*{min-width:0}
         <button class="pstep" id="pNext" aria-label="Periodo siguiente">›</button>
       </div>
       <button class="pall" id="pAll">Todo el histórico<b id="pAllN"></b></button>
+      <div class="fechas" title="Filtrar por días específicos">
+        <span class="fechas-lbl">Días</span>
+        <input id="fDesde" type="date" aria-label="Desde">
+        <span class="fechas-a">a</span>
+        <input id="fHasta" type="date" aria-label="Hasta">
+      </div>
       <span class="prange" id="prange"></span>
       <div class="ppop" id="pPop" hidden role="dialog" aria-label="Seleccionar periodo">
         <div class="ppop-years" id="pYears"></div>
@@ -1221,6 +1272,29 @@ main>*,#viewGraf>*,.gcols>*{min-width:0}
       </button>
     </div>
   </div>
+  <div class="fbar" id="fbar">
+    <div class="fbar-in">
+      <div class="fbar-top">
+        <button class="ftoggle" id="fToggle" aria-expanded="true">
+          <svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true"><path d="M3 4h14l-5.5 6.5V16l-3 1.5v-7z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+          Filtros <b id="fNum"></b>
+        </button>
+        <div class="chipbar" id="chips"></div>
+      </div>
+      <div class="filters" id="fGrid">
+        <div class="field"><label for="fZona">Zona palmera</label><select id="fZona"></select></div>
+        <div class="field"><label for="fDpto">Departamento</label><select id="fDpto"></select></div>
+        <div class="field munibox" id="fMuniBox"><label for="fMuni" id="fMuniLbl">Municipio</label><select id="fMuni"></select></div>
+        <div class="field"><label for="fDpalm">Departamento palmero</label><select id="fDpalm"></select></div>
+        <div class="field"><label for="fMpalm">Municipio palmero</label><select id="fMpalm"></select></div>
+        <div class="field"><label for="fCampo">Campo afectado</label><select id="fCampo"></select></div>
+        <div class="field"><label for="fHecho">Hecho</label><select id="fHecho"></select></div>
+        <div class="field"><label for="fAfec">Tipo de afectación</label><select id="fAfec"></select></div>
+        <div class="field"><label for="fActor">Actor</label><select id="fActor"></select></div>
+        <div class="field"><label for="fQ">Buscar texto</label><input id="fQ" type="search" placeholder="municipio, actor, fuente…"></div>
+      </div>
+    </div>
+  </div>
 </header>
 
 <section class="kpis" id="kpis"></section>
@@ -1237,19 +1311,6 @@ main>*,#viewGraf>*,.gcols>*{min-width:0}
   <div style="display:grid;gap:16px;min-width:0">
     <section class="panel">
       <div class="panel-h"><h2>Registro de hechos</h2><span class="count" id="regcount"></span></div>
-      <div class="filters">
-        <div class="field"><label for="fZona">Zona palmera</label><select id="fZona"></select></div>
-        <div class="field"><label for="fAfec">Tipo de afectación</label><select id="fAfec"></select></div>
-        <div class="field"><label for="fCampo">Campo afectado</label><select id="fCampo"></select></div>
-        <div class="field"><label for="fMpalm">Municipio palmero</label><select id="fMpalm"></select></div>
-        <div class="field munibox" id="fMuniBox" hidden><label for="fMuni" id="fMuniLbl">Municipio</label><select id="fMuni"></select></div>
-        <div class="field"><label for="fDpalm">Departamento palmero</label><select id="fDpalm"></select></div>
-        <div class="field"><label for="fHecho">Hecho</label><select id="fHecho"></select></div>
-        <div class="field"><label for="fDpto">Departamento</label><select id="fDpto"></select></div>
-        <div class="field"><label for="fActor">Actor</label><select id="fActor"></select></div>
-        <div class="field"><label for="fQ">Buscar texto</label><input id="fQ" type="search" placeholder="municipio, actor, fuente…"></div>
-      </div>
-      <div class="chipbar" id="chips"></div>
       <div class="reg" id="reg"></div>
     </section>
 
@@ -1277,7 +1338,7 @@ main>*,#viewGraf>*,.gcols>*{min-width:0}
 </main>
 
 <div id="viewGraf" hidden>
-  <section class="panel gfilters">
+  <section class="panel gfilters" hidden>
     <div class="panel-h"><h2>Filtros del análisis</h2><span class="count" id="gcount"></span></div>
     <div class="filters">
       <div class="field"><label for="gZona">Zona palmera</label><select id="gZona"></select></div>
@@ -1410,9 +1471,13 @@ function ymCorto(k){
 const GRANCOL = {mes:'ym', trimestre:'q', anio:'an'};
 
 /* ---- un periodo puede ser uno solo o un rango "clave..clave" ---- */
-function esRango(k){ return typeof k === 'string' && k.includes('..'); }
+function esDias(k){ return typeof k === 'string' && k.startsWith('D:'); }
+function esRango(k){ return typeof k === 'string' && !esDias(k) && k.includes('..'); }
 function perIni(k){ return esRango(k) ? k.split('..')[0] : k; }
-function perFin(k){ return esRango(k) ? k.split('..')[1] : k; }
+function perFin(k){
+  if(esDias(k)) return k.slice(2).split('..')[1].slice(0,7);
+  return esRango(k) ? k.split('..')[1] : k;
+}
 function enPeriodo(valor, k){
   if(k === 'ALL') return true;
   if(!esRango(k)) return valor === k;
@@ -1421,6 +1486,7 @@ function enPeriodo(valor, k){
 }
 function perEtiqueta(k){
   if(k === 'ALL') return 'todo el histórico';
+  if(esDias(k)){ const [a,b] = k.slice(2).split('..'); return etiquetaFechas(a, b); }
   if(!esRango(k)) return ymLabel(k);
   const a = perIni(k), b = perFin(k);
   if(!a.includes('-T') && a.includes('-') && a.slice(0,4) === b.slice(0,4))
@@ -1742,17 +1808,38 @@ function palmTexto(r){
   return x ? `${fmtN(x.p)} palmicultores · ${fmtN(x.ha)} ha en el municipio` : 'sin palmicultores registrados en el municipio';
 }
 
+/* ---- fechas día a día ---- */
+function ymdDe(r){
+  if(!r._ymd){ const d = r.fecha;
+    r._ymd = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+  return r._ymd;
+}
+function enFechas(r){ const k = ymdDe(r); return (!F.desde || k >= F.desde) && (!F.hasta || k <= F.hasta); }
+function fechasActivas(){ return !!(F.desde || F.hasta); }
+function fmtYMD(k){ const [y,m,d] = k.split('-'); return d + '-' + MESES3[+m-1] + '-' + y.slice(2); }
+function etiquetaFechas(a, b){
+  if(a && b) return a === b ? fmtYMD(a) : fmtYMD(a) + ' a ' + fmtYMD(b);
+  return a ? 'desde ' + fmtYMD(a) : 'hasta ' + fmtYMD(b);
+}
+
 /* ============ estado ============ */
 let ALL = [], MONTH = 'ALL', GRAN = 'mes', CMP = null, SELMUNI = null, ADMIN = false, DIRTY = false, DIAG = '';
-const F = {zona:'', afec:'', campo:'', hecho:'', dpto:'', mpalm:'', dpalm:'', actor:'', q:''};
+const F = {zona:'', afec:'', campo:'', hecho:'', dpto:'', mpalm:'', dpalm:'', actor:'', q:'', desde:'', hasta:''};
 const noGeo = new Set();
 
 /* ============ mapa ============ */
-const map = L.map('map', {zoomControl:true, attributionControl:false, scrollWheelZoom:true, minZoom:4, maxZoom:11})
+const map = L.map('map', {zoomControl:true, attributionControl:false, scrollWheelZoom:true, minZoom:4, maxZoom:13})
              .setView([5.4,-73.4], 5.3);
 
 const ZONE_COLORS = ['#515B22','#7C8B3A','#A8A05A','#C08A2E','#6E7C6A','#8C7C52','#9AA089'];
 let zoneColor = {};
+const COLOR_ZONA = {                         // uno por zona, distinguibles entre sí
+  'NORTE'        : '#2F7F86',   // verde azulado
+  'CENTRAL'      : '#6E8B1E',   // verde oliva
+  'ORIENTAL'     : '#D8921E',   // dorado
+  'SUROCCIDENTAL': '#8E4E7A',   // ciruela
+  'SIN ZONA'     : '#9A9A8C'
+};
 let deptLayer = L.geoJSON(GEO_DEPTOS, {
   className:'dept',
   style: () => ({color:'#C2C4B0', weight:.8, fillColor:'#EAEAE0', fillOpacity:1})
@@ -1761,7 +1848,8 @@ map.fitBounds(deptLayer.getBounds(), {padding:[12,12]});
 let HOME = deptLayer.getBounds();
 const markerLayer = L.layerGroup().addTo(map);
 const MARKERS = new Map();
-const LIMITE_NUM = 500;   // por encima de este número el mapa agrupa por municipio
+const LIMITE_NUM = 500;
+let MODO_MAPA = 'numerado';   // por encima de este número el mapa agrupa por municipio
 const LIMITE_REG = 400;   // filas dibujadas en el registro antes de recortar
 
 const legend = L.control({position:'bottomright'});
@@ -1799,12 +1887,14 @@ function paintDepartments(rows){
   });
   const zones = [...new Set(rows.map(r => r.zona))].sort();
   zoneColor = {};
-  zones.forEach((z,i) => zoneColor[z] = ZONE_COLORS[i % ZONE_COLORS.length]);
+  zones.forEach((z,i) => zoneColor[z] = COLOR_ZONA[norm(z)] || ZONE_COLORS[i % ZONE_COLORS.length]);
 
   deptLayer.setStyle(f => {
     const z = zoneByDept[f.properties.key];
+    if(F.dpto && f.properties.key === norm(F.dpto))
+      return {color:'#303B27', weight:2.4, fillColor:zoneColor[z] || '#C9CBB8', fillOpacity:.42};
     return z
-      ? {color:'#8E9279', weight:1.1, fillColor:zoneColor[z], fillOpacity:.26}
+      ? {color:'#7C806C', weight:1.1, fillColor:zoneColor[z], fillOpacity:.34}
       : {color:'#CFCFC0', weight:.7, fillColor:'#ECECE2', fillOpacity:1};
   });
   const active = [];
@@ -1819,6 +1909,48 @@ function paintDepartments(rows){
   return zones;
 }
 
+
+/* ---- geometría: punto dentro del departamento ---- */
+const DPTO_GEOM = (() => {
+  const t = {};
+  GEO_DEPTOS.features.forEach(f => t[f.properties.key] = f.geometry);
+  return t;
+})();
+function enAnillo(lon, lat, anillo){
+  let dentro = false;
+  for(let i = 0, j = anillo.length - 1; i < anillo.length; j = i++){
+    const [xi, yi] = anillo[i], [xj, yj] = anillo[j];
+    if(((yi > lat) !== (yj > lat)) && (lon < (xj - xi) * (lat - yi) / (yj - yi) + xi)) dentro = !dentro;
+  }
+  return dentro;
+}
+function enPoligono(lon, lat, poly){
+  if(!enAnillo(lon, lat, poly[0])) return false;
+  for(let h = 1; h < poly.length; h++) if(enAnillo(lon, lat, poly[h])) return false;
+  return true;
+}
+function enDepartamento(lat, lon, dpto){
+  const g = DPTO_GEOM[norm(dpto)];
+  if(!g) return true;                       // sin geometría no se restringe
+  if(g.type === 'Polygon') return enPoligono(lon, lat, g.coordinates);
+  return g.coordinates.some(p => enPoligono(lon, lat, p));
+}
+function dentroDelDepartamento(pos, dpto){
+  if(enDepartamento(pos.lat, pos.lon, dpto)) return pos;
+  const c = GEO_MUNI.dept[norm(dpto)];
+  if(!c) return pos;
+  for(let t = 0.1; t <= 1.0001; t += 0.1){          // se acerca al centro del departamento
+    const la = pos.lat + (c[0] - pos.lat) * t, lo = pos.lon + (c[1] - pos.lon) * t;
+    if(enDepartamento(la, lo, dpto)) return {...pos, lat:la, lon:lo};
+  }
+  return pos;
+}
+function boundsDepartamento(dpto){
+  let found = null;
+  deptLayer.eachLayer(l => { if(l.feature.properties.key === norm(dpto)) found = l.getBounds(); });
+  return found;
+}
+
 function drawMarkers(rows){
   markerLayer.clearLayers();
   MARKERS.clear();
@@ -1830,10 +1962,13 @@ function drawMarkers(rows){
     groups.get(key).items.push(r);
   });
   const bounds = [];
-  const numerado = rows.length <= LIMITE_NUM;
+  // municipio elegido: todos sus hechos; departamento elegido: agrupado por municipio
+  const numerado = SELMUNI ? true : (F.dpto ? false : rows.length <= LIMITE_NUM);
+  MODO_MAPA = numerado ? 'numerado' : 'agrupado';
   groups.forEach((g,key) => {
-    const pos = locate(g.dpto, g.muni);
+    let pos = locate(g.dpto, g.muni);
     if(!pos){ noGeo.add(g.muni + ' (' + g.dpto + ')'); return; }
+    pos = dentroDelDepartamento(pos, g.dpto);
     if(!pos.exact && g.muni) noGeo.add(g.muni + ' (' + g.dpto + ')');
     bounds.push([pos.lat,pos.lon]);
     const n = g.items.length;
@@ -1857,17 +1992,23 @@ function drawMarkers(rows){
     }
 
     const grupo = [];
+    // posiciones: espiral de Fermat, saltando las que caen fuera del departamento
+    const slots = [];
+    if(n > 1){
+      const base = SELMUNI ? 0.016 : 0.028;
+      const cosLat = Math.cos(pos.lat * Math.PI / 180);
+      for(let j = 0; slots.length < n && j < n * 8; j++){
+        const ang = j * 2.39996, rad = base * Math.sqrt(j + 0.6);
+        const la = pos.lat + rad * Math.sin(ang), lo = pos.lon + rad * Math.cos(ang) / cosLat;
+        if(enDepartamento(la, lo, g.dpto)) slots.push([la, lo]);
+      }
+      while(slots.length < n) slots.push([pos.lat, pos.lon]);
+    }
     g.items.forEach((it,i) => {
       let lat = pos.lat, lon = pos.lon;
-      if(n > 1){                                   // se abren en espiral para no taparse
-        const anillo = Math.floor(i / 8), enAnillo = i % 8;
-        const rad = 0.085 + anillo * 0.075;
-        const ang = (enAnillo / 8) * 2 * Math.PI + anillo * 0.4;
-        lat += rad * Math.sin(ang);
-        lon += rad * Math.cos(ang) / Math.cos(pos.lat * Math.PI / 180);
-      }
+      if(n > 1){ lat = slots[i][0]; lon = slots[i][1]; }
       const m = L.marker([lat,lon], {
-        icon: pinIcon(it.no, it.afec === 'DIRECTA', SELMUNI === key),
+        icon: pinIcon(it.no, it.afec === 'DIRECTA', false),
         riseOnHover:true, zIndexOffset: it.afec === 'DIRECTA' ? 400 : 0
       });
       m.bindPopup(
@@ -1898,7 +2039,7 @@ function drawLegend(zones, numerandoAhora){
      <div class="row"><svg class="sw" viewBox="-8 -8 16 16"><path d="M0,-7 L2.2,-2.2 L7,0 L2.2,2.2 L0,7 L-2.2,2.2 L-7,0 L-2.2,-2.2 Z" fill="#C2410C" stroke="#fff" stroke-width="1.2"/></svg> Directa a palmicultores</div>
      <div class="row"><svg class="sw" viewBox="-8 -8 16 16"><circle r="7" fill="#6E7460" stroke="#fff" stroke-width="1.2"/></svg> Indirecta</div>
      <hr><div class="eyebrow" style="margin-bottom:5px">Zona palmera</div>` +
-    zones.map(z => `<div class="row"><span class="sw" style="background:${zoneColor[z]};opacity:.45;border:1px solid #AFB29C"></span> ${esc(z)}</div>`).join('') +
+    zones.map(z => `<div class="row"><span class="sw" style="background:${zoneColor[z]};opacity:.75;border:1px solid rgba(0,0,0,.15)"></span> ${esc(z)}</div>`).join('') +
     `<hr><div style="font-size:10.5px;color:#7E8375;max-width:195px">${numerandoAhora
        ? 'El número es el consecutivo de la noticia en el registro.'
        : 'Vista agregada: el número es la cantidad de hechos del municipio. Filtre por mes o zona para ver los consecutivos.'}
@@ -1920,6 +2061,7 @@ function applyFilters(rows){
     (!F.mpalm || r.mpalm === F.mpalm) &&
     (!F.dpalm || r.dpalm === F.dpalm) &&
     (!F.actor || r.actor === F.actor) &&
+    (!fechasActivas() || enFechas(r)) &&
     (!SELMUNI || (r.munKey || norm(r.dpto) + '|' + norm(r.muni)) === SELMUNI) &&
     (!q || norm([r.muni,r.dpto,r.sitio,r.actor,r.fuente,r.titulo,r.desc,r.hecho].join(' ')).includes(q))
   );
@@ -1982,12 +2124,17 @@ function render(){
   // mapa
   const zones = paintDepartments(base);
   const bounds = drawMarkers(rows);
-  drawLegend(zones, rows.length <= LIMITE_NUM);
+  drawLegend(zones, MODO_MAPA === 'numerado');
   document.getElementById('mapcount').textContent =
     `${new Set(rows.map(r => r.munKey || norm(r.dpto)+'|'+norm(r.muni))).size} municipios · ${rows.length} hechos` +
-    (rows.length > LIMITE_NUM ? ' · agrupado por municipio' : '');
-  if(bounds.length && (F.zona || F.dpto || SELMUNI)){
-    map.fitBounds(L.latLngBounds(bounds).pad(0.45), {maxZoom:8.5, animate:false});
+    (MODO_MAPA === 'agrupado' ? ' · agrupado por municipio' : '');
+  if(SELMUNI){
+    const pts = []; markerLayer.eachLayer(m => pts.push(m.getLatLng()));
+    if(pts.length) map.fitBounds(L.latLngBounds(pts).pad(0.6), {maxZoom:11, animate:false});
+  }else if(F.dpto && boundsDepartamento(F.dpto)){
+    map.fitBounds(boundsDepartamento(F.dpto).pad(0.05), {animate:false});
+  }else if(bounds.length && F.zona){
+    map.fitBounds(L.latLngBounds(bounds).pad(0.35), {maxZoom:8.5, animate:false});
   }else{
     map.fitBounds(HOME, {animate:false});
   }
@@ -1998,13 +2145,18 @@ function render(){
     `<span class="chip">${lbl}: <b>${esc(val)}</b><button data-clear="${clear}" aria-label="Quitar filtro">×</button></span>`);
   if(MONTH !== 'ALL') add(esRango(MONTH) ? 'Periodo' : 'Mes', perEtiqueta(MONTH), 'MONTH');
   ['zona','afec','campo','hecho','dpto','mpalm','dpalm','actor'].forEach(k => {
-    if(F[k]) add(k === 'afec' ? 'afectación' : k === 'mpalm' ? 'municipio palmero'
-                 : k === 'dpalm' ? 'departamento palmero' : k, F[k], k); });
+    if(F[k]) add(ETIQ_FILTRO[k] || k, F[k], k); });
   if(F.q) add('Texto', F.q, 'q');
   if(SELMUNI){
     const r = base.find(x => (x.munKey || norm(x.dpto)+'|'+norm(x.muni)) === SELMUNI);
     add('Municipio', r ? r.muni : SELMUNI, 'MUNI');
   }
+  if(fechasActivas()) add('Fechas', etiquetaFechas(F.desde, F.hasta), 'FECHAS');
+  limitesFechas();
+  document.querySelector('.fechas').classList.toggle('activas', fechasActivas());
+  const nAct = ['zona','afec','campo','hecho','dpto','mpalm','dpalm','actor','q'].filter(k => F[k]).length
+               + (SELMUNI ? 1 : 0) + (fechasActivas() ? 1 : 0);
+  document.getElementById('fNum').textContent = nAct || '';
   document.getElementById('chips').innerHTML =
     (chips.length ? chips.join('') + `<button class="linkbtn" id="clearAll">Limpiar todo</button>` : '<span class="eyebrow">Sin filtros activos</span>');
 
@@ -2196,13 +2348,15 @@ let PERKEYS = [], PERCOUNT = {}, ANIOSEL = null, ANCLA = null;
 function pintarSelector(){
   const keys = PERKEYS;
   const sel = clavesDe(MONTH);
-  document.getElementById('pPickTxt').textContent = MONTH === 'ALL' ? 'Elegir periodo' : perEtiqueta(MONTH);
+  document.getElementById('pPickTxt').textContent = MONTH === 'ALL'
+    ? (fechasActivas() ? 'Días: ' + etiquetaFechas(F.desde, F.hasta) : 'Elegir periodo') : perEtiqueta(MONTH);
   document.getElementById('pPickN').textContent = MONTH === 'ALL' ? ''
     : sel.reduce((s,k) => s + (PERCOUNT[k] || 0), 0);
-  document.getElementById('pAll').setAttribute('aria-pressed', MONTH === 'ALL');
+  document.getElementById('pAll').setAttribute('aria-pressed', MONTH === 'ALL' && !fechasActivas());
   const iA = keys.indexOf(perIni(MONTH)), iB = keys.indexOf(perFin(MONTH));
-  document.getElementById('pPrev').disabled = MONTH === 'ALL' || iA <= 0;
-  document.getElementById('pNext').disabled = MONTH === 'ALL' || iB < 0 || iB >= keys.length - 1;
+  const ventana = MONTH === 'ALL' && F.desde && F.hasta;   // con días elegidos las flechas mueven la ventana
+  document.getElementById('pPrev').disabled = ventana ? false : (MONTH === 'ALL' || iA <= 0);
+  document.getElementById('pNext').disabled = ventana ? false : (MONTH === 'ALL' || iB < 0 || iB >= keys.length - 1);
   document.getElementById('prange').textContent = keys.length
     ? `${keys.length} ${GRAN === 'mes' ? 'meses' : GRAN === 'trimestre' ? 'trimestres' : 'años'} · ${ymLabel(keys[0])} a ${ymLabel(keys[keys.length-1])}`
     : '';
@@ -2244,6 +2398,7 @@ function abrirPop(v){
   if(v) pintarSelector();
 }
 function irAPeriodo(k, dejarAbierto){
+  if(k !== 'ALL') limpiarFechas();
   MONTH = k; SELMUNI = null; ANCLA = null;
   if(k !== 'ALL') ANIOSEL = perFin(k).slice(0,4);
   if(!dejarAbierto) abrirPop(false);
@@ -2259,14 +2414,22 @@ function armarRango(a, b){
 /* ============ eventos ============ */
 document.getElementById('granbox').addEventListener('click', e => {
   const g = e.target.closest('.gchip'); if(!g) return;
-  GRAN = g.dataset.g; CMP = null; SELMUNI = null; ANIOSEL = null;
+  GRAN = g.dataset.g; CMP = null; SELMUNI = null; ANIOSEL = null; limpiarFechas();
   const ps = periodos(); MONTH = ps.length ? ps[ps.length-1] : 'ALL';
   buildMonths(); render();
 });
 document.getElementById('pPick').addEventListener('click', () =>
   abrirPop(document.getElementById('pPop').hidden));
-document.getElementById('pAll').addEventListener('click', () => irAPeriodo('ALL'));
+document.getElementById('pAll').addEventListener('click', () => { limpiarFechas(); irAPeriodo('ALL'); });
 function desplazar(paso){
+  if(MONTH === 'ALL' && F.desde && F.hasta){
+    const a = new Date(F.desde + 'T00:00:00'), b = new Date(F.hasta + 'T00:00:00');
+    const dias = Math.round((b - a) / 864e5) + 1;
+    a.setDate(a.getDate() + paso * dias); b.setDate(b.getDate() + paso * dias);
+    const f = d => d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+    document.getElementById('fDesde').value = f(a); document.getElementById('fHasta').value = f(b);
+    aplicarFechas(); return;
+  }
   const ia = PERKEYS.indexOf(perIni(MONTH)), ib = PERKEYS.indexOf(perFin(MONTH));
   if(ia < 0 || ib < 0) return;
   const na = ia + paso, nb = ib + paso;
@@ -2305,14 +2468,17 @@ document.addEventListener('click', e => {
 document.addEventListener('keydown', e => { if(e.key === 'Escape') abrirPop(false); });
 [['fZona','zona'],['fAfec','afec'],['fCampo','campo'],['fHecho','hecho'],['fDpto','dpto'],['fMpalm','mpalm'],['fDpalm','dpalm'],['fActor','actor']].forEach(([id,k]) =>
   document.getElementById(id).addEventListener('change', e => {
-    F[k] = e.target.value; if(k === 'mpalm') SELMUNI = null; render(); }));
+    F[k] = e.target.value;
+    if(['mpalm','dpto','zona','dpalm'].includes(k)) SELMUNI = null;
+    render(); if(VISTA === 'graf') renderGraficas(); }));
 let qt; document.getElementById('fQ').addEventListener('input', e => {
   clearTimeout(qt); qt = setTimeout(() => { F.q = e.target.value; render(); }, 200);
 });
 document.getElementById('chips').addEventListener('click', e => {
   const b = e.target.closest('button'); if(!b) return;
-  if(b.id === 'clearAll'){ Object.keys(F).forEach(k => F[k] = ''); SELMUNI = null; document.getElementById('fQ').value=''; }
+  if(b.id === 'clearAll'){ Object.keys(F).forEach(k => F[k] = ''); SELMUNI = null; document.getElementById('fQ').value=''; limpiarFechas(); }
   else if(b.dataset.clear === 'MONTH') MONTH = 'ALL';
+  else if(b.dataset.clear === 'FECHAS') limpiarFechas();
   else if(b.dataset.clear === 'MUNI') SELMUNI = null;
   else if(b.dataset.clear === 'q'){ F.q = ''; document.getElementById('fQ').value = ''; }
   else F[b.dataset.clear] = '';
@@ -2357,7 +2523,9 @@ document.getElementById('btnCsv').addEventListener('click', () => {
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv;charset=utf-8'}));
   a.download = 'monitor_seguridad_' +
-    (MONTH === 'ALL' ? 'historico' : perIni(MONTH) + (esRango(MONTH) ? '_a_' + perFin(MONTH) : '')) + '.csv';
+    (MONTH === 'ALL'
+      ? (fechasActivas() ? (F.desde || 'inicio') + '_a_' + (F.hasta || 'fin') : 'historico')
+      : perIni(MONTH) + (esRango(MONTH) ? '_a_' + perFin(MONTH) : '')) + '.csv';
   a.click(); URL.revokeObjectURL(a.href);
 });
 
@@ -2429,12 +2597,54 @@ function filasGraf(){                       // respeta filtros pero NO el period
     (!q || norm([r.muni,r.dpto,r.sitio,r.actor,r.fuente,r.titulo,r.desc,r.hecho].join(' ')).includes(q)));
 }
 
+
+/* ---- mismo periodo del año anterior (mes, trimestre, rango o días) ---- */
+function restarAnio(k){ return String(+k.slice(0,4) - 1) + k.slice(4); }
+function mismoPeriodoAnterior(universo){
+  const col = pcol();
+  if(MONTH === 'ALL' && fechasActivas()){
+    const ks = universo.map(ymdDe).sort();
+    const a = F.desde || ks[0], b = F.hasta || ks[ks.length-1];
+    const pa = restarAnio(a), pb = restarAnio(b);
+    return {
+      tipo:'dias',
+      lblAct: etiquetaFechas(a, b), lblAnt: etiquetaFechas(pa, pb),
+      act: universo.filter(r => { const k = ymdDe(r); return k >= a && k <= b; }),
+      ant: universo.filter(r => { const k = ymdDe(r); return k >= pa && k <= pb; })
+    };
+  }
+  if(MONTH === 'ALL' || GRAN === 'anio') return null;      // año o histórico: se usa el acumulado comparable
+  const kAnt = esRango(MONTH) ? restarAnio(perIni(MONTH)) + '..' + restarAnio(perFin(MONTH)) : restarAnio(MONTH);
+  const act = universo.filter(r => enPeriodo(r[col], MONTH));
+  let ant = universo.filter(r => enPeriodo(r[col], kAnt));
+  let lblAnt = perEtiqueta(kAnt), lblAct = perEtiqueta(MONTH);
+  // si el periodo actual aún no está completo (p. ej. III trimestre con solo julio y agosto),
+  // del año anterior se toman solo los mismos meses
+  const anioFin = perFin(MONTH).slice(0,4);
+  const ultimo = Math.max(0, ...ALL.filter(r => r.an === anioFin).map(r => r.fecha.getMonth()+1));
+  const finPer = perFin(MONTH);
+  const mesFinPer = finPer.includes('-T') ? +finPer.split('-T')[1] * 3 : +finPer.split('-')[1];
+  if(ultimo && ultimo < mesFinPer){
+    ant = ant.filter(r => r.an !== String(+anioFin - 1) || (r.fecha.getMonth()+1) <= ultimo);
+    const corte = ' (hasta ' + MESES[ultimo-1].toLowerCase() + ')';
+    lblAnt += corte; lblAct += corte;
+  }
+  return {tipo:'periodo', lblAct, lblAnt, kAnt, act, ant};
+}
+function resumenPar(filas, lbl){
+  const d = filas.filter(r => r.afec === 'DIRECTA').length;
+  return {lbl, a:filas.length, b:d, rel: filas.length ? Math.round(d / filas.length * 100) : 0};
+}
+function variacion(ant, act){ return ant ? Math.round((act - ant) / ant * 100) : null; }
+
 function renderGraficas(){
   if(VISTA !== 'graf') return;
   const universo = filasGraf();
   const col = pcol();
-  const delPeriodo = MONTH === 'ALL' ? universo : universo.filter(r => enPeriodo(r[col], MONTH));
-  const etiquetaPer = perEtiqueta(MONTH);
+  const delPeriodo = MONTH === 'ALL'
+    ? (fechasActivas() ? universo.filter(enFechas) : universo)
+    : universo.filter(r => enPeriodo(r[col], MONTH));
+  const etiquetaPer = (MONTH === 'ALL' && fechasActivas()) ? etiquetaFechas(F.desde, F.hasta) : perEtiqueta(MONTH);
 
   ['gZona','gAfec','gCampo','gHecho','gDpto','gMpalm','gDpalm','gActor'].forEach((id,k) =>
     fillSelect(id, ['zona','afec','campo','hecho','dpto','mpalm','dpalm','actor'][k], ALL,
@@ -2510,34 +2720,51 @@ function renderGraficas(){
   const anioPrev = String(+anioSel - 1);
   const hayPrev = universo.some(r => r.an === anioPrev);
   const gAnio = document.getElementById('gAnio');
-  document.getElementById('gAnioMode').textContent = anioPrev + ' vs ' + anioSel + ' · periodos comparables';
   if(!hayPrev){
+    document.getElementById('gAnioMode').textContent = anioPrev + ' vs ' + anioSel;
     gAnio.innerHTML = `<div class="empty" style="padding:28px 18px">
       <strong>No hay datos de ${anioPrev}</strong>
       Para reproducir la lámina de comparación interanual, cargue desde el modo administrador
-      el archivo de ${anioPrev}. Mientras tanto la comparación disponible es entre periodos de ${anioSel},
-      en la pestaña Mapa y registro.</div>`;
+      el archivo de ${anioPrev}.</div>`;
   }else{
-    const fin = perFin(MONTH);
-    const topeMes = MONTH === 'ALL'
+    // acumulado comparable del año (enero hasta el mes del periodo elegido)
+    const fin = (MONTH === 'ALL' && fechasActivas()) ? (F.hasta || F.desde).slice(0,7) : perFin(MONTH);
+    const topeMes = MONTH === 'ALL' && !fechasActivas()
       ? Math.max(...universo.filter(r => r.an === anioSel).map(r => r.fecha.getMonth()+1), 12)
       : (fin.includes('-T') ? +fin.split('-T')[1] * 3 : (fin.includes('-') ? +fin.split('-')[1] : 12));
-    const rangoLbl = topeMes >= 12 ? 'año completo'
-                                   : 'ene-' + MESES[topeMes-1].slice(0,3).toLowerCase();
-    const par = [anioPrev, anioSel].map(an => {
-      const f = universo.filter(r => r.an === an && (r.fecha.getMonth()+1) <= topeMes);
-      const d = f.filter(r => r.afec === 'DIRECTA').length;
-      return {lbl:an, a:f.length, b:d, rel: f.length ? Math.round(d/f.length*100) : 0};
-    });
-    const dA = par[0].a ? Math.round((par[1].a - par[0].a) / par[0].a * 100) : 0;
-    const dD = par[0].b ? Math.round((par[1].b - par[0].b) / par[0].b * 100) : 0;
-    gAnio.innerHTML = `
-      ${svgBarrasV(par, {alto:250, W:540})}
-      ${leyenda([['#6C7A33','Hechos'],['#C2410C','Afectaciones directas']])}
-      <div class="nota">Periodos comparables <b>${rangoLbl}</b>. Frente a ${anioPrev}, los hechos ${dA >= 0 ? 'aumentan' : 'disminuyen'}
-        <b>${Math.abs(dA)}%</b> y las afectaciones directas ${dD >= 0 ? 'aumentan' : 'disminuyen'}
-        <b>${Math.abs(dD)}%</b>. La relación hechos-afectaciones pasó de
-        <b>${par[0].rel}%</b> a <b>${par[1].rel}%</b>.</div>`;
+    const ultimoMes = Math.max(0, ...universo.filter(r => r.an === anioSel).map(r => r.fecha.getMonth()+1));
+    const tope = Math.min(topeMes, ultimoMes || 12);
+    const rangoLbl = tope >= 12 ? 'año completo' : 'ene-' + MESES[tope-1].slice(0,3).toLowerCase();
+    const acum = [anioPrev, anioSel].map(an =>
+      resumenPar(universo.filter(r => r.an === an && (r.fecha.getMonth()+1) <= tope), an));
+    const vA = variacion(acum[0].a, acum[1].a), vAD = variacion(acum[0].b, acum[1].b);
+    const sube = v => v >= 0 ? 'aumentan' : 'disminuyen';
+    const txtAcum = `Acumulado <b>${rangoLbl}</b> ${anioPrev} (${acum[0].a}) frente a ${anioSel} (${acum[1].a}):
+        los hechos ${sube(vA)} <b>${Math.abs(vA)}%</b> y las afectaciones directas ${sube(vAD)} <b>${Math.abs(vAD)}%</b>;
+        la relación hechos-afectaciones pasó de <b>${acum[0].rel}%</b> a <b>${acum[1].rel}%</b>.`;
+
+    const mp = mismoPeriodoAnterior(universo);
+    if(mp){
+      // mes, trimestre, rango o días: contra el mismo periodo del año anterior
+      const par = [resumenPar(mp.ant, mp.lblAnt), resumenPar(mp.act, mp.lblAct)];
+      const v1 = variacion(par[0].a, par[1].a), v2 = variacion(par[0].b, par[1].b);
+      document.getElementById('gAnioMode').textContent = mp.lblAnt + ' vs ' + mp.lblAct;
+      gAnio.innerHTML = par[0].a ? `
+        ${svgBarrasV(par, {alto:250, W:540})}
+        ${leyenda([['#6C7A33','Hechos'],['#C2410C','Afectaciones directas']])}
+        <div class="nota">Comparado con el mismo periodo del año anterior (<b>${esc(mp.lblAnt)}</b>), los hechos
+          ${sube(v1)} <b>${Math.abs(v1)}%</b> y las afectaciones directas ${v2 === null ? 'no son comparables' : sube(v2) + ' <b>' + Math.abs(v2) + '%</b>'}.
+          La relación hechos-afectaciones pasó de <b>${par[0].rel}%</b> a <b>${par[1].rel}%</b>.
+          <br>${txtAcum}</div>`
+        : `<div class="empty" style="padding:28px 18px"><strong>Sin hechos en ${esc(mp.lblAnt)}</strong>
+            No hay registros en el mismo periodo del año anterior para comparar.</div>`;
+    }else{
+      document.getElementById('gAnioMode').textContent = anioPrev + ' vs ' + anioSel + ' · periodos comparables';
+      gAnio.innerHTML = `
+        ${svgBarrasV(acum, {alto:250, W:540})}
+        ${leyenda([['#6C7A33','Hechos'],['#C2410C','Afectaciones directas']])}
+        <div class="nota">${txtAcum}</div>`;
+    }
   }
 
   /* ---- 4. top 10 municipios ---- */
@@ -2769,6 +2996,7 @@ function contraer(t){                       // "de el mes" -> "del mes", "a el m
 }
 function perNombre(k){                      // "julio de 2026" / "III Trimestre de 2026" / "2026"
   if(!k) return '';
+  if(esDias(k)){ const [a,b] = k.slice(2).split('..'); return etiquetaFechas(a, b); }
   if(esRango(k)) return perEtiqueta(k).toLowerCase();
   if(k.includes('-T')){ const [y,t] = k.split('-T'); return ROMANO[+t-1] + ' Trimestre de ' + y; }
   if(!k.includes('-')) return k;
@@ -2776,6 +3004,8 @@ function perNombre(k){                      // "julio de 2026" / "III Trimestre 
 }
 function nombrePeriodo(k){
   if(!k) return '';
+  if(esDias(k)){ const [a,b] = k.slice(2).split('..');
+    return a === b ? 'el día ' + fmtYMD(a) : 'el periodo del ' + fmtYMD(a) + ' al ' + fmtYMD(b); }
   if(esRango(k)) return 'el periodo ' + perEtiqueta(k).toLowerCase();
   if(k.includes('-T')) return 'el ' + perNombre(k);
   if(!k.includes('-')) return 'el año ' + k;
@@ -2787,7 +3017,8 @@ function renderAnalisis(universo){
   const cajaTit = document.getElementById('gAnalisisTit');
   const caja = document.getElementById('gAnalisis');
 
-  if(MONTH === 'ALL'){
+  const usarDias = MONTH === 'ALL' && fechasActivas();
+  if(MONTH === 'ALL' && !usarDias){
     cajaTit.textContent = 'Análisis del periodo';
     document.getElementById('gAnalisisMode').textContent = 'seleccione un periodo';
     caja.innerHTML = `<div class="empty" style="padding:26px 18px">
@@ -2796,19 +3027,37 @@ function renderAnalisis(universo){
     return;
   }
 
-  const ps = periodos();
-  const sel = clavesDe(MONTH);
-  const iAct = ps.indexOf(sel[0]);
-  const largo = sel.length;
-  const previos = (iAct > 0) ? ps.slice(Math.max(0, iAct - largo), iAct) : [];
-  const kAnt = previos.length ? (previos.length > 1
-      ? previos[0] + '..' + previos[previos.length-1] : previos[0]) : null;
-  const act = universo.filter(r => enPeriodo(r[col], MONTH));
-  const ant = kAnt ? universo.filter(r => enPeriodo(r[col], kAnt)) : [];
+  let PER, kAnt, act, ant;
+  if(usarDias){
+    // ventana de días elegida y la ventana inmediatamente anterior de igual duración
+    const todas = universo.map(ymdDe).sort();
+    const a = F.desde || todas[0], b = F.hasta || todas[todas.length-1];
+    const dA = new Date(a + 'T00:00:00'), dB = new Date(b + 'T00:00:00');
+    const dias = Math.round((dB - dA) / 864e5) + 1;
+    const pB = new Date(dA); pB.setDate(pB.getDate() - 1);
+    const pA = new Date(pB); pA.setDate(pA.getDate() - dias + 1);
+    const f = d => d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+    PER = 'D:' + a + '..' + b;
+    kAnt = 'D:' + f(pA) + '..' + f(pB);
+    act = universo.filter(r => { const k = ymdDe(r); return k >= a && k <= b; });
+    ant = universo.filter(r => { const k = ymdDe(r); return k >= f(pA) && k <= f(pB); });
+    if(!ant.length) kAnt = null;
+  }else{
+    const ps = periodos();
+    const sel = clavesDe(MONTH);
+    const iAct = ps.indexOf(sel[0]);
+    const largo = sel.length;
+    const previos = (iAct > 0) ? ps.slice(Math.max(0, iAct - largo), iAct) : [];
+    PER = MONTH;
+    kAnt = previos.length ? (previos.length > 1
+        ? previos[0] + '..' + previos[previos.length-1] : previos[0]) : null;
+    act = universo.filter(r => enPeriodo(r[col], MONTH));
+    ant = kAnt ? universo.filter(r => enPeriodo(r[col], kAnt)) : [];
+  }
   const dAct = act.filter(r => r.afec === 'DIRECTA').length;
   const dAnt = ant.filter(r => r.afec === 'DIRECTA').length;
 
-  cajaTit.textContent = contraer('Análisis de ' + nombrePeriodo(MONTH));
+  cajaTit.textContent = contraer('Análisis de ' + nombrePeriodo(PER));
   document.getElementById('gAnalisisMode').textContent =
     kAnt ? 'comparado con ' + perEtiqueta(kAnt) : 'sin periodo anterior cargado';
 
@@ -2823,14 +3072,14 @@ function renderAnalisis(universo){
   /* 1 · volumen y afectaciones */
   const vT = varTexto(act.length, ant.length), vD = varTexto(dAct, dAnt);
   if(vT){
-    B.push(`Los hechos registrados en ${nombrePeriodo(MONTH)} (<b>${act.length}</b>),
+    B.push(`Los hechos registrados en ${nombrePeriodo(PER)} (<b>${act.length}</b>),
       <span class="${vT.cls}">${vT.verbo}</span> con relación a ${nombrePeriodo(kAnt)} (<b>${ant.length}</b>)
       en un <b>${vT.p}%</b>. Las afectaciones directas sobre la agroindustria
       ${vD ? `presentaron <span class="${vD.cls}">${vD.dir} del ${vD.p}%</span>: en ${perNombre(kAnt)}
-      fueron <b>${dAnt}</b> y en ${perNombre(MONTH)} son <b>${dAct}</b>`
+      fueron <b>${dAnt}</b> y en ${perNombre(PER)} son <b>${dAct}</b>`
       : `suman <b>${dAct}</b>`}, equivalentes al <b>${pct(dAct, act.length)}%</b> del total del periodo.`);
   }else{
-    B.push(`En ${nombrePeriodo(MONTH)} se registraron <b>${act.length}</b> hechos, de los cuales
+    B.push(`En ${nombrePeriodo(PER)} se registraron <b>${act.length}</b> hechos, de los cuales
       <b>${dAct}</b> (<b>${pct(dAct, act.length)}%</b>) afectan directamente las actividades de la agroindustria.
       No hay un periodo anterior cargado para comparar.`);
   }
@@ -2841,7 +3090,7 @@ function renderAnalisis(universo){
     .sort((a,b) => b.n - a.n);
   if(zs.length){
     const resto = zs.slice(1).map(x => `${x.z.toLowerCase()} ${x.n} hechos (<b>${pct(x.n, act.length)}%</b>)`).join(', ');
-    B.push(`Del total de eventos registrados en ${nombrePeriodo(MONTH)} (<b>${act.length}</b> registros) se evidencia
+    B.push(`Del total de eventos registrados en ${nombrePeriodo(PER)} (<b>${act.length}</b> registros) se evidencia
       que en la zona <b>${zs[0].z.toLowerCase()}</b> es donde se presenta la mayor cantidad de hechos de interés
       para la agroindustria: <b>${zs[0].n}</b> hechos (<b>${pct(zs[0].n, act.length)}%</b>)${resto ? ', seguida por ' + resto : ''}.`);
   }
@@ -2860,7 +3109,7 @@ function renderAnalisis(universo){
   }
 
   /* 4 · acumulado del año frente al año anterior */
-  const finSel = perFin(MONTH);
+  const finSel = perFin(PER);
   const anio = finSel.slice(0,4), anioPrev = String(+anio - 1);
   const mesTope = finSel.includes('-T') ? +finSel.split('-T')[1] * 3
                   : (finSel.includes('-') ? +finSel.split('-')[1] : 12);
@@ -2882,6 +3131,17 @@ function renderAnalisis(universo){
       No hay datos de ${anioPrev} cargados para la comparación interanual.`);
   }
 
+  /* 4b · mismo periodo del año anterior */
+  const mpA = mismoPeriodoAnterior(universo);
+  if(mpA && mpA.ant.length){
+    const pa = resumenPar(mpA.ant, ''), pc = resumenPar(mpA.act, '');
+    const x1 = varTexto(pc.a, pa.a), x2 = varTexto(pc.b, pa.b);
+    B.push(`Comparado con el mismo periodo del año anterior (<b>${esc(mpA.lblAnt)}</b>) se presenta
+      <span class="${x1.cls}">${x1.dir} del ${x1.p}%</span> en las acciones (${pa.a} frente a ${pc.a})${
+      x2 ? ` y <span class="${x2.cls}">${x2.dir} del ${x2.p}%</span> en las afectaciones directas (${pa.b} frente a ${pc.b})` : ''}.
+      La relación acciones-afectaciones pasó de <b>${pa.rel}%</b> a <b>${pc.rel}%</b>.`);
+  }
+
   /* 5 · conducta más frecuente */
   const th = {};
   act.forEach(r => th[r.hecho] = (th[r.hecho] || 0) + 1);
@@ -2891,7 +3151,7 @@ function renderAnalisis(universo){
     const n1Ant = ant.filter(r => r.hecho === h1).length;
     const v1 = varTexto(n1, n1Ant);
     const gH = GRUPOS[0], gN = cuentaGrupo(act, gH), gA = cuentaGrupo(ant, gH), vG = varTexto(gN, gA);
-    B.push(`Durante ${nombrePeriodo(MONTH)} se aprecia que la conducta ilegal que más se presenta es
+    B.push(`Durante ${nombrePeriodo(PER)} se aprecia que la conducta ilegal que más se presenta es
       <b>${h1.toLowerCase()}</b> (<b>${n1} hechos</b>)${v1 ? `, ${v1.d === 0 ? 'igual' : `<span class="${v1.cls}">${v1.verboS} un ${v1.p}%</span>`} respecto a ${nombrePeriodo(kAnt)}` : ''}${
       gN ? `, seguido por el ${gH.nom} (<b>${gN} hechos</b>)${vG ? `, ${vG.d === 0 ? 'sin variación' : `<span class="${vG.cls}">${vG.verboS} un ${vG.p}%</span>`}` : ''}` : ''}.`);
   }
@@ -2983,16 +3243,18 @@ document.getElementById('gchips').addEventListener('click', e => {
 
 
 /* ---- lista de municipios del tipo elegido en "Municipio palmero" ---- */
+const ETIQ_FILTRO = {zona:'Zona', dpto:'Departamento', campo:'Campo', hecho:'Hecho', actor:'Actor',
+  afec:'Afectación', mpalm:'Municipio palmero', dpalm:'Departamento palmero'};
 function llenarMunicipios(pref, rows){
-  const box = document.getElementById(pref + 'MuniBox');
   const sel = document.getElementById(pref + 'Muni');
-  if(!F.mpalm){ box.hidden = true; return; }
-  box.hidden = false;
-  document.getElementById(pref + 'MuniLbl').textContent =
-    F.mpalm === 'SI' ? 'Municipios palmeros' : 'Municipios no palmeros';
+  const lbl = document.getElementById(pref + 'MuniLbl');
+  lbl.textContent = F.mpalm === 'SI' ? 'Municipio palmero' : F.mpalm === 'NO' ? 'Municipio no palmero' : 'Municipio';
   const t = {};
   rows.forEach(r => {
-    if(r.mpalm !== F.mpalm) return;
+    if(F.zona  && r.zona  !== F.zona)  return;
+    if(F.dpto  && r.dpto  !== F.dpto)  return;
+    if(F.mpalm && r.mpalm !== F.mpalm) return;
+    if(F.dpalm && r.dpalm !== F.dpalm) return;
     const k = r.munKey;
     t[k] = t[k] || {muni:r.muni, dpto:r.dpto, n:0};
     t[k].n++;
@@ -3001,13 +3263,128 @@ function llenarMunicipios(pref, rows){
     a[1].muni.localeCompare(b[1].muni, 'es') || a[1].dpto.localeCompare(b[1].dpto, 'es'));
   sel.innerHTML = `<option value="">Todos (${lista.length})</option>` +
     lista.map(([k,v]) => `<option value="${esc(k)}"${k === SELMUNI ? ' selected' : ''}>` +
-      `${esc(v.muni)} (${esc(v.dpto)}) · ${v.n}</option>`).join('');
+      `${esc(v.muni)}${F.dpto ? '' : ' (' + esc(v.dpto) + ')'} · ${v.n}</option>`).join('');
   if(SELMUNI && !t[SELMUNI]) sel.value = '';
 }
 ['fMuni','gMuni'].forEach(id => document.getElementById(id).addEventListener('change', e => {
   SELMUNI = e.target.value || null;
   render(); if(VISTA === 'graf') renderGraficas();
 }));
+
+document.getElementById('fToggle').addEventListener('click', () => {
+  const bar = document.getElementById('fbar');
+  const cerrada = bar.classList.toggle('cerrada');
+  document.getElementById('fToggle').setAttribute('aria-expanded', !cerrada);
+  ajustarHdr();
+});
+function ajustarHdr(){
+  const h = document.querySelector('header').offsetHeight;
+  document.documentElement.style.setProperty('--hdr', h + 'px');
+}
+if(window.ResizeObserver) new ResizeObserver(ajustarHdr).observe(document.querySelector('header'));
+if(window.innerWidth < 900){                 // en pantallas pequeñas los filtros arrancan plegados
+  document.getElementById('fbar').classList.add('cerrada');
+  document.getElementById('fToggle').setAttribute('aria-expanded', 'false');
+}
+window.addEventListener('resize', ajustarHdr);
+
+
+
+/* ---- fechas: al elegir días se deja el periodo en "todo" para no cruzar filtros ---- */
+function limitesFechas(){
+  const d = document.getElementById('fDesde'), h = document.getElementById('fHasta');
+  if(!ALL.length) return;
+  const ks = ALL.map(ymdDe).sort();
+  [d, h].forEach(x => { x.min = ks[0]; x.max = ks[ks.length-1]; });
+  if(F.desde) h.min = F.desde;
+  if(F.hasta) d.max = F.hasta;
+}
+function aplicarFechas(){
+  const d = document.getElementById('fDesde').value, h = document.getElementById('fHasta').value;
+  F.desde = d; F.hasta = h;
+  if(F.desde && F.hasta && F.desde > F.hasta){ [F.desde, F.hasta] = [F.hasta, F.desde]; }
+  if(fechasActivas()){ MONTH = 'ALL'; SELMUNI = SELMUNI; }
+  render(); if(VISTA === 'graf') renderGraficas();
+}
+['fDesde','fHasta'].forEach(id => document.getElementById(id).addEventListener('change', aplicarFechas));
+// un solo día: si se elige "desde" y "hasta" está vacío, se toma el mismo día
+document.getElementById('fDesde').addEventListener('change', () => {
+  const h = document.getElementById('fHasta');
+  if(document.getElementById('fDesde').value && !h.value){ h.value = document.getElementById('fDesde').value; aplicarFechas(); }
+});
+function limpiarFechas(){
+  F.desde = ''; F.hasta = '';
+  document.getElementById('fDesde').value = ''; document.getElementById('fHasta').value = '';
+}
+
+/* ============ listas con búsqueda ============ */
+const sinTilde = t => String(t).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+function resaltar(texto, q){
+  if(!q) return esc(texto);
+  const i = sinTilde(texto).indexOf(sinTilde(q));
+  if(i < 0) return esc(texto);
+  return esc(texto.slice(0, i)) + '<mark>' + esc(texto.slice(i, i + q.length)) + '</mark>' + esc(texto.slice(i + q.length));
+}
+function combo(id){
+  const sel = document.getElementById(id);
+  if(!sel || sel.dataset.combo) return;
+  sel.dataset.combo = '1';
+  const wrap = document.createElement('div'); wrap.className = 'combo';
+  sel.parentNode.insertBefore(wrap, sel); wrap.appendChild(sel); sel.classList.add('combo-sel');
+  const inp = document.createElement('input');
+  inp.type = 'text'; inp.className = 'combo-in'; inp.id = id + 'Txt'; inp.autocomplete = 'off';
+  inp.setAttribute('role', 'combobox'); inp.setAttribute('aria-expanded', 'false');
+  const x = document.createElement('button');
+  x.type = 'button'; x.className = 'combo-x'; x.textContent = '×'; x.setAttribute('aria-label', 'Quitar selección');
+  const list = document.createElement('div'); list.className = 'combo-list'; list.hidden = true; list.setAttribute('role', 'listbox');
+  wrap.append(inp, x, list);
+  const lbl = wrap.parentNode.querySelector('label'); if(lbl) lbl.htmlFor = inp.id;
+  let items = [], activo = -1;
+
+  function sync(){
+    const o = sel.options[sel.selectedIndex];
+    const lleno = !!(o && o.value);
+    if(document.activeElement !== inp) inp.value = lleno ? o.text : '';
+    inp.placeholder = sel.options[0] ? sel.options[0].text : '';
+    wrap.classList.toggle('lleno', lleno);
+  }
+  function pintar(q){
+    const nq = sinTilde(q.trim());
+    items = [...sel.options].filter(o => !nq || sinTilde(o.text).includes(nq));
+    if(activo >= items.length) activo = items.length - 1;
+    list.innerHTML = items.length
+      ? items.slice(0, 400).map((o,i) => `<div class="combo-op${o.value === sel.value ? ' sel' : ''}${i === activo ? ' act' : ''}"
+          data-i="${i}" role="option">${resaltar(o.text, q.trim())}</div>`).join('')
+      : '<div class="combo-vacio">Sin coincidencias</div>';
+    const a = list.querySelector('.act'); if(a) a.scrollIntoView({block:'nearest'});
+  }
+  function abrir(){ activo = -1; pintar(''); list.hidden = false; inp.setAttribute('aria-expanded', 'true'); inp.select(); }
+  function cerrar(){ list.hidden = true; inp.setAttribute('aria-expanded', 'false'); sync(); }
+  function elegir(o){
+    if(!o) return;
+    sel.value = o.value;
+    sel.dispatchEvent(new Event('change', {bubbles:true}));
+    inp.blur(); cerrar();
+  }
+  inp.addEventListener('focus', abrir);
+  inp.addEventListener('input', () => { activo = 0; pintar(inp.value); list.hidden = false; });
+  inp.addEventListener('keydown', e => {
+    if(e.key === 'ArrowDown'){ e.preventDefault(); if(list.hidden) abrir(); activo = Math.min(items.length - 1, activo + 1); pintar(inp.value === (sel.options[sel.selectedIndex] || {}).text ? '' : inp.value); }
+    else if(e.key === 'ArrowUp'){ e.preventDefault(); activo = Math.max(0, activo - 1); pintar(inp.value === (sel.options[sel.selectedIndex] || {}).text ? '' : inp.value); }
+    else if(e.key === 'Enter'){ e.preventDefault(); elegir(items[activo >= 0 ? activo : 0]); }
+    else if(e.key === 'Escape'){ inp.blur(); cerrar(); }
+  });
+  inp.addEventListener('blur', () => setTimeout(cerrar, 150));
+  list.addEventListener('mousedown', e => {
+    const d = e.target.closest('.combo-op'); if(!d) return;
+    e.preventDefault(); elegir(items[+d.dataset.i]);
+  });
+  x.addEventListener('click', e => { e.preventDefault(); elegir(sel.options[0]); });
+  new MutationObserver(sync).observe(sel, {childList:true, subtree:true, attributes:true});
+  sel.addEventListener('change', sync);
+  sync();
+}
+['fDpto','fMuni','fHecho','fActor'].forEach(combo);
 
 /* ============ administración ============ */
 const ADMIN_KEY = 'palma2026';   // cambie esta clave antes de distribuir el archivo
