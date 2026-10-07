@@ -1,0 +1,16 @@
+{
+  "name": "seguridad",
+  "version": "1.0.0",
+  "description": "Monitor de Seguridad · Zonas Palmeras",
+  "scripts": {
+    "dev": "python3 -m http.server 8000",
+    "build": "echo 'Static HTML project - no build needed'",
+    "lint": "echo 'No linter configured for static HTML'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1"
+  }
+}
