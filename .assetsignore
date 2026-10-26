@@ -1,0 +1,17 @@
+   wrangler.jsonc
+   wrangler.toml
+   src
+   api
+   node_modules
+   .git
+   .github
+   .wrangler
+   .vercel
+   .assetsignore
+   package.json
+   package-lock.json
+   staticwebapp.config.json
+   vercel.json
+   README.md
+   *.zip
+   .dev.vars
