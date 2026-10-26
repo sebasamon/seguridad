@@ -2064,8 +2064,9 @@ function drawMarkers(rows){
     groups.get(key).items.push(r);
   });
   const bounds = [];
-  // municipio elegido: todos sus hechos; departamento elegido: agrupado por municipio
-  const numerado = SELMUNI ? true : (F.dpto ? false : rows.length <= LIMITE_NUM);
+  // por defecto agrupado por municipio (número = cantidad de hechos);
+  // al elegir un municipio se despliegan sus hechos con el consecutivo de cada uno
+  const numerado = !!SELMUNI;
   MODO_MAPA = numerado ? 'numerado' : 'agrupado';
   groups.forEach((g,key) => {
     let pos = locate(g.dpto, g.muni);
@@ -2085,7 +2086,7 @@ function drawMarkers(rows){
         `<div class="pop-h">${esc(g.muni)}</div>
          <div class="pop-s">${esc(g.dpto)} · ${n} hecho(s) · ${dir} directo(s)</div>
          <div class="pop-s" style="color:#303B27;font-weight:600">${palmTexto(g.items[0])}</div>${lista}
-         ${n > 12 ? `<div class="pop-s" style="margin-top:6px">+${n-12} más. Filtre por mes o zona para ver los consecutivos en el mapa.</div>` : ''}`,
+         ${n > 12 ? `<div class="pop-s" style="margin-top:6px">+${n-12} más.</div>` : ''}`,
         {maxWidth:300});
       m.on('click', () => { SELMUNI = SELMUNI === key ? null : key; render(); });
       m.addTo(markerLayer);
@@ -2143,9 +2144,8 @@ function drawLegend(zones, numerandoAhora){
      <hr><div class="eyebrow" style="margin-bottom:5px">Zona palmera</div>` +
     zones.map(z => `<div class="row"><span class="sw" style="background:${zoneColor[z]};opacity:.75;border:1px solid rgba(0,0,0,.15)"></span> ${esc(z)}</div>`).join('') +
     `<hr><div style="font-size:10.5px;color:#7E8375;max-width:195px">${numerandoAhora
-       ? 'El número es el consecutivo de la noticia en el registro.'
-       : 'Vista agregada: el número es la cantidad de hechos del municipio. Filtre por mes o zona para ver los consecutivos.'}
-       Haga clic en un marcador para filtrar por su municipio.</div>`;
+       ? 'El número es el consecutivo de cada hecho en el registro. Quite el filtro de municipio para volver a la vista agrupada.'
+       : 'El número es la cantidad de hechos del municipio. Haga clic en un marcador para ver el consecutivo de cada hecho.'}</div>`;
 }
 
 /* ============ filtros ============ */
@@ -2234,7 +2234,7 @@ function render(){
     (MODO_MAPA === 'agrupado' ? ' · agrupado por municipio' : '');
   if(SELMUNI){
     const pts = []; markerLayer.eachLayer(m => pts.push(m.getLatLng()));
-    if(pts.length) map.fitBounds(L.latLngBounds(pts).pad(0.6), {maxZoom:11, animate:false});
+    if(pts.length) map.fitBounds(L.latLngBounds(pts).pad(pts.length > 12 ? 0.18 : 0.6), {maxZoom:11, animate:false});
   }else if(F.dpto && boundsDepartamento(F.dpto)){
     map.fitBounds(boundsDepartamento(F.dpto).pad(0.05), {animate:false});
   }else if(bounds.length && F.zona){
