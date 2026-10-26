@@ -1,0 +1,18 @@
+{
+  // Monitor de Seguridad · Zonas Palmeras
+  // El nombre debe coincidir con el del Worker en Cloudflare.
+  "name": "seguridad",
+  "main": "src/worker.js",
+  "compatibility_date": "2025-10-01",
+  "assets": {
+    "directory": "./",
+    "binding": "ASSETS"
+  },
+  "durable_objects": {
+    "bindings": [{ "name": "CONTADOR", "class_name": "Contador" }]
+  },
+  "migrations": [
+    { "tag": "v1", "new_sqlite_classes": ["Contador"] }
+  ],
+  "observability": { "enabled": true }
+}
