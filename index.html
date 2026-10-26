@@ -856,6 +856,10 @@ header{
 .chart text{font-family:'IBM Plex Sans',system-ui,sans-serif;fill:var(--ink-soft)}
 .chart .lbl{font-size:12px}
 .chart .val{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;fill:var(--ink);font-weight:500}
+.chart .pctv{font-family:'Archivo','Helvetica Neue',Arial,sans-serif;font-size:19px;font-weight:800;fill:var(--directa)}
+.chart .pcth{font-family:'Archivo','Helvetica Neue',Arial,sans-serif;font-size:16px;font-weight:800;fill:var(--directa)}
+.pcg{font-family:'Archivo','Helvetica Neue',Arial,sans-serif;font-size:1.3em;font-weight:800;color:var(--directa);
+  line-height:1;white-space:nowrap}
 .chart .valw{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;fill:#fff;font-weight:600}
 .chart .ax{stroke:var(--rule);stroke-width:1}
 .chart .gl{stroke:#E9E9E0;stroke-width:1}
@@ -874,7 +878,9 @@ header{
   font-family:'IBM Plex Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
 .gtab td:first-child{text-align:left;font-family:'IBM Plex Sans',system-ui,sans-serif;font-weight:600}
 .gtab tr.tot td{background:#EDEEE3;font-weight:700;border-top:2px solid var(--palm)}
-.gtab .pc{color:var(--directa);font-weight:600}
+.gtab .pc{color:var(--directa);font-weight:800;font-size:15px;font-family:'Archivo','Helvetica Neue',Arial,sans-serif}
+.gtab tr.tot td.pc{font-size:18px}
+.gtab td.pp{font-weight:800;font-size:14px;font-family:'Archivo','Helvetica Neue',Arial,sans-serif;color:var(--palm-deep)}
 .analisis .panel-h .count{margin-left:auto}
 .copybtn{background:var(--palm);color:#fff;border:0;padding:6px 13px;border-radius:2px;margin-left:12px;
   font-family:'Archivo','Helvetica Neue',Arial,sans-serif;font-weight:700;font-size:10px;
@@ -960,6 +966,46 @@ header{
 .fechas.activas .fechas-lbl,.fechas.activas .fechas-a{color:#2A1E05}
 .fechas.activas input{font-weight:700}
 @media(max-width:560px){.fechas{flex-basis:100%}.fechas input{flex:1;width:auto;min-width:0}}
+.porhecho{max-height:430px;overflow-y:auto}
+.porhecho thead th{position:sticky;top:0;z-index:1}
+.gtab th.ord{cursor:pointer;user-select:none}
+.gtab th.ord:hover,.gtab th.ord.on{background:var(--palm-deep)}
+.gtab tr.tot td small{font-weight:400;color:var(--ink-soft);font-size:10.5px}
+.porhecho tr.tot td{position:sticky;bottom:0}
+.ingresos{flex-basis:100%;border:1px solid #6B551A;border-radius:2px;background:#463713;padding:9px 11px;color:#EBD9A4}
+.ingresos h4{margin:0 0 7px;font-family:'Archivo','Helvetica Neue',Arial,sans-serif;font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;color:#F3DFB0;display:flex;gap:10px;align-items:center}
+.ingresos h4 button{margin-left:auto}
+.ing-k{display:flex;gap:18px;flex-wrap:wrap}
+.ing-k div b{display:block;font-family:'Archivo','Helvetica Neue',Arial,sans-serif;font-size:20px;font-weight:800;color:#fff;line-height:1.1}
+.ing-k div small{font-size:10.5px;color:#D9C792}
+.ing-spark{display:flex;align-items:flex-end;gap:2px;height:34px;margin-top:9px}
+.ing-spark i{flex:1;background:#D8921E;border-radius:1px 1px 0 0;min-height:1px}
+.ing-msg{font-size:11.5px;color:#D9C792;line-height:1.5}
+.multi{position:relative}
+.multi-btn{width:100%;min-width:0;text-align:left;font:inherit;font-size:12px;padding:5px 24px 5px 7px;border:1px solid var(--rule);
+  border-radius:2px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;
+  background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%235A6152' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 8px center}
+.multi.lleno .multi-btn{border-color:var(--palm);background-color:#F4F5EC;font-weight:600}
+.multi-btn b{display:inline-block;background:var(--palm);color:#fff;border-radius:8px;padding:0 6px;font-size:10.5px;margin-right:5px}
+.multi-pop{position:absolute;left:0;top:calc(100% + 2px);z-index:1600;width:310px;max-width:calc(100vw - 30px);background:#fff;
+  border:1px solid var(--rule);border-radius:3px;box-shadow:0 10px 26px rgba(0,0,0,.22);padding:8px}
+.multi-q{width:100%;font:inherit;font-size:12px;padding:6px 8px;border:1px solid var(--rule);border-radius:2px}
+.multi-acc{display:flex;gap:6px;justify-content:flex-end;margin:6px 0}
+.multi-acc .pmini[aria-pressed="true"]{background:var(--palm);border-color:var(--palm);color:#fff}
+.multi-list{max-height:330px;overflow-y:auto;border-top:1px solid var(--rule)}
+.multi-grp{display:flex;align-items:center;gap:7px;padding:8px 4px 4px;font-family:'Archivo','Helvetica Neue',Arial,sans-serif;
+  font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--palm-deep);cursor:pointer}
+.multi-op{display:flex;align-items:center;gap:7px;padding:4px 4px 4px 18px;font-size:12px;cursor:pointer;border-radius:2px}
+.multi-op:hover,.multi-grp:hover{background:#EEF0E2}
+.multi-op span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.multi-op i{font-style:normal;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10.5px;color:var(--ink-soft)}
+.multi input[type=checkbox]{accent-color:var(--palm);margin:0;flex:none;width:14px;height:14px;padding:0;min-width:0}
+.multi-pop{font-size:12px;text-transform:none;letter-spacing:normal;color:var(--ink)}
+.filtros .multi .multi-op,.multi .multi-op{text-transform:none;letter-spacing:normal;font-weight:400;color:var(--ink);font-family:inherit;margin:0}
+.multi-pop .multi-op{font-size:12.5px}
+.multi .multi-grp{font-size:10.5px}
+.multi-vacio{padding:10px 4px;font-size:12px;color:var(--ink-soft)}
 .granbox{display:inline-flex;align-self:center;margin-right:14px;border:1px solid #5E6A26;border-radius:2px;overflow:hidden}
 .gchip{background:transparent;border:0;padding:5px 11px;color:#A3AA85;
   font-family:'Archivo','Helvetica Neue',Arial,sans-serif;font-weight:600;font-size:10px;
@@ -1074,7 +1120,7 @@ header{
 .kpi.dir .v{color:var(--directa)}
 .kpi.ind{border-left:3px solid var(--indirecta)}
 .kpi.ind .v{color:#5C6E67}
-.kpi .pct{font-family:'IBM Plex Mono',ui-monospace,'SF Mono',Consolas,monospace;font-size:11px;color:var(--ink-soft);margin-left:6px;font-weight:400}
+.kpi .pct{font-family:'Archivo','Helvetica Neue',Arial,sans-serif;font-size:18px;color:inherit;margin-left:8px;font-weight:800;opacity:.9}
 .kpi.wide{padding-bottom:0;text-align:center}
 .kpi-split{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin:9px -14px 0;
   background:var(--rule);border-top:1px solid var(--rule)}
@@ -1263,6 +1309,7 @@ main>*,#viewGraf>*,.gcols>*{min-width:0}
         recargar sin descargar los pierde.
       </p>
       <div class="adminmonths" id="adminmonths"></div>
+      <div class="ingresos" id="ingresos"></div>
     </div>
   </div>
   <div class="monthrail">
@@ -1326,7 +1373,17 @@ main>*,#viewGraf>*,.gcols>*{min-width:0}
         <div class="field"><label for="fMpalm">Municipio palmero</label><select id="fMpalm"></select></div>
         <div class="field"><label for="fArea">Área</label><select id="fArea"></select></div>
         <div class="field"><label for="fCampo">Campo afectado</label><select id="fCampo"></select></div>
-        <div class="field"><label for="fHecho">Hecho</label><select id="fHecho"></select></div>
+        <div class="field multi" id="fHechoBox"><label for="fHechoTxt">Hechos</label>
+          <button type="button" class="multi-btn" id="fHechoTxt" aria-haspopup="listbox" aria-expanded="false"><span>Todos</span></button>
+          <div class="multi-pop" id="fHechoPop" hidden>
+            <input type="search" class="multi-q" id="fHechoQ" placeholder="Buscar hecho…" autocomplete="off">
+            <div class="multi-acc">
+              <button type="button" class="pmini" id="fHechoVer">Solo seleccionados</button>
+              <button type="button" class="pmini" id="fHechoLimpiar">Limpiar</button>
+            </div>
+            <div class="multi-list" id="fHechoList" role="listbox" aria-multiselectable="true"></div>
+          </div>
+        </div>
         <div class="field"><label for="fAfec">Tipo de afectación</label><select id="fAfec"></select></div>
         <div class="field"><label for="fActor">Actor</label><select id="fActor"></select></div>
         <div class="field"><label for="fQ">Buscar texto</label><input id="fQ" type="search" placeholder="municipio, actor, fuente…"></div>
@@ -1386,7 +1443,7 @@ main>*,#viewGraf>*,.gcols>*{min-width:0}
       <div class="field"><label for="gMpalm">Municipio palmero</label><select id="gMpalm"></select></div>
       <div class="field munibox" id="gMuniBox" hidden><label for="gMuni" id="gMuniLbl">Municipio</label><select id="gMuni"></select></div>
       <div class="field"><label for="gDpalm">Departamento palmero</label><select id="gDpalm"></select></div>
-      <div class="field"><label for="gHecho">Hecho</label><select id="gHecho"></select></div>
+      
       <div class="field"><label for="gDpto">Departamento</label><select id="gDpto"></select></div>
       <div class="field"><label for="gActor">Actor</label><select id="gActor"></select></div>
       <div class="field"><label for="gQ">Buscar texto</label><input id="gQ" type="search" placeholder="municipio, actor, fuente…"></div>
@@ -1868,7 +1925,8 @@ function etiquetaFechas(a, b){
 
 /* ============ estado ============ */
 let ALL = [], MONTH = 'ALL', GRAN = 'mes', CMP = null, SELMUNI = null, ADMIN = false, DIRTY = false, DIAG = '';
-const F = {zona:'', afec:'', campo:'', hecho:'', dpto:'', mpalm:'', dpalm:'', actor:'', area:'', q:'', desde:'', hasta:''};
+function limpiarF(){ Object.keys(F).forEach(k => F[k] = (k === 'hecho' ? [] : '')); }
+const F = {zona:'', afec:'', campo:'', hecho:[], dpto:'', mpalm:'', dpalm:'', actor:'', area:'', q:'', desde:'', hasta:''};
 const noGeo = new Set();
 
 /* ============ mapa ============ */
@@ -2100,7 +2158,7 @@ function applyFilters(rows){
     (!F.zona  || r.zona  === F.zona) &&
     (!F.afec  || r.afec  === F.afec) &&
     (!F.campo || r.campo === F.campo) &&
-    (!F.hecho || r.hecho === F.hecho) &&
+    (!F.hecho.length || F.hecho.includes(r.hecho)) &&
     (!F.dpto  || r.dpto  === F.dpto) &&
     (!F.mpalm || r.mpalm === F.mpalm) &&
     (!F.dpalm || r.dpalm === F.dpalm) &&
@@ -2127,7 +2185,7 @@ function render(){
   fillSelect('fZona','zona',base,'Todas');
   fillSelect('fAfec','afec',base,'Todas');
   fillSelect('fCampo','campo',base,'Todos');
-  fillSelect('fHecho','hecho',base,'Todos');
+  llenarHechos(base);
   fillSelect('fDpto','dpto',base,'Todos');
   fillSelect('fMpalm','mpalm',ALL,'Todos');   // sí/no siempre disponibles
   fillSelect('fDpalm','dpalm',ALL,'Todos');
@@ -2190,8 +2248,9 @@ function render(){
   const add = (lbl,val,clear) => chips.push(
     `<span class="chip">${lbl}: <b>${esc(val)}</b><button data-clear="${clear}" aria-label="Quitar filtro">×</button></span>`);
   if(MONTH !== 'ALL') add(esRango(MONTH) ? 'Periodo' : 'Mes', perEtiqueta(MONTH), 'MONTH');
-  ['zona','afec','campo','hecho','dpto','mpalm','dpalm','actor','area'].forEach(k => {
+  ['zona','afec','campo','dpto','mpalm','dpalm','actor','area'].forEach(k => {
     if(F[k]) add(ETIQ_FILTRO[k] || k, F[k], k); });
+  if(F.hecho.length) add(F.hecho.length > 1 ? 'Hechos (' + F.hecho.length + ')' : 'Hecho', F.hecho.join(', '), 'hecho');
   if(F.q) add('Texto', F.q, 'q');
   if(SELMUNI){
     const r = base.find(x => (x.munKey || norm(x.dpto)+'|'+norm(x.muni)) === SELMUNI);
@@ -2200,7 +2259,7 @@ function render(){
   if(fechasActivas()) add('Fechas', etiquetaFechas(F.desde, F.hasta), 'FECHAS');
   limitesFechas();
   document.querySelector('.fechas').classList.toggle('activas', fechasActivas());
-  const nAct = ['zona','afec','campo','hecho','dpto','mpalm','dpalm','actor','area','q'].filter(k => F[k]).length
+  const nAct = ['zona','afec','campo','dpto','mpalm','dpalm','actor','area','q'].filter(k => F[k]).length + (F.hecho.length ? 1 : 0)
                + (SELMUNI ? 1 : 0) + (fechasActivas() ? 1 : 0);
   document.getElementById('fNum').textContent = nAct || '';
   document.getElementById('chips').innerHTML =
@@ -2513,7 +2572,7 @@ document.addEventListener('click', e => {
   if(!e.target.closest('#pPop') && !e.target.closest('#pPick')) abrirPop(false);
 });
 document.addEventListener('keydown', e => { if(e.key === 'Escape') abrirPop(false); });
-[['fZona','zona'],['fAfec','afec'],['fCampo','campo'],['fHecho','hecho'],['fDpto','dpto'],['fMpalm','mpalm'],['fDpalm','dpalm'],['fActor','actor'],['fArea','area']].forEach(([id,k]) =>
+[['fZona','zona'],['fAfec','afec'],['fCampo','campo'],['fDpto','dpto'],['fMpalm','mpalm'],['fDpalm','dpalm'],['fActor','actor'],['fArea','area']].forEach(([id,k]) =>
   document.getElementById(id).addEventListener('change', e => {
     F[k] = e.target.value;
     if(['mpalm','dpto','zona','dpalm'].includes(k)) SELMUNI = null;
@@ -2523,12 +2582,12 @@ let qt; document.getElementById('fQ').addEventListener('input', e => {
 });
 document.getElementById('chips').addEventListener('click', e => {
   const b = e.target.closest('button'); if(!b) return;
-  if(b.id === 'clearAll'){ Object.keys(F).forEach(k => F[k] = ''); SELMUNI = null; document.getElementById('fQ').value=''; limpiarFechas(); }
+  if(b.id === 'clearAll'){ limpiarF(); SELMUNI = null; document.getElementById('fQ').value=''; limpiarFechas(); }
   else if(b.dataset.clear === 'MONTH') MONTH = 'ALL';
   else if(b.dataset.clear === 'FECHAS') limpiarFechas();
   else if(b.dataset.clear === 'MUNI') SELMUNI = null;
   else if(b.dataset.clear === 'q'){ F.q = ''; document.getElementById('fQ').value = ''; }
-  else F[b.dataset.clear] = '';
+  else F[b.dataset.clear] = (b.dataset.clear === 'hecho' ? [] : '');
   render();
 });
 document.getElementById('reg').addEventListener('click', e => {
@@ -2563,9 +2622,17 @@ document.getElementById('cmp').addEventListener('click', e => {
 /* ============ gráficas ============ */
 const VIS = {mapa:'viewMapa', graf:'viewGraf'};
 let VISTA = 'mapa';
+let ORD_H = {col:'ha', dir:-1};
+document.addEventListener('click', e => {
+  const th = e.target.closest('#gExp th[data-ord]'); if(!th) return;
+  const c = th.dataset.ord;
+  ORD_H = ORD_H.col === c ? {col:c, dir:-ORD_H.dir} : {col:c, dir: c === 'h' ? 1 : -1};
+  renderGraficas();
+});
 
 function svgBarrasV(datos, opts){          // datos: [{lbl, a, b}]
-  const W = opts.W || 1000, alto = opts.alto || 250, padL = 34, padR = 10, padB = opts.padB || 30, padT = 22;
+  const conPct = opts.pct !== false;
+  const W = opts.W || 1000, alto = (opts.alto || 250) + (conPct ? 18 : 0), padL = 34, padR = 10, padB = opts.padB || 30, padT = conPct ? 42 : 22;
   const n = datos.length || 1;
   const max = opts.max || Math.max(1, ...datos.map(d => Math.max(d.a, d.b)));
   const paso = (W - padL - padR) / n;
@@ -2579,6 +2646,7 @@ function svgBarrasV(datos, opts){          // datos: [{lbl, a, b}]
       <rect class="bar-d" x="${x2}" y="${y(d.b)}" width="${w}" height="${Math.max(1, y(0) - y(d.b))}"/>
       <text class="val" x="${x1 + w/2}" y="${y(d.a) - 5}" text-anchor="middle">${d.a}</text>
       <text class="val" x="${x2 + w/2}" y="${y(d.b) - 5}" text-anchor="middle" fill="#C2410C">${d.b}</text>
+      ${conPct && d.a ? `<text class="pctv" style="font-size:${Math.min(19, Math.max(11, paso * 0.3)).toFixed(1)}px" x="${cx}" y="${Math.min(y(d.a), y(d.b)) - 22}" text-anchor="middle">${Math.round(d.b / d.a * 100)}%</text>` : ''}
       <text class="lbl" x="${cx}" y="${alto - padB + 14}" text-anchor="middle"${
         paso < 42 ? ` transform="rotate(-45 ${cx} ${alto - padB + 14})" text-anchor="end"` : ''}>${esc(d.lbl)}</text>`;
   }).join('');
@@ -2590,7 +2658,8 @@ function svgBarrasV(datos, opts){          // datos: [{lbl, a, b}]
 }
 
 function svgBarrasH(datos, opts){          // datos: [{lbl, d, i}] apiladas
-  const W = opts.W || 1000, hf = opts.hf || 30, padL = opts.padL || 180, padR = 46;
+  const conPct = !!opts.pct;
+  const W = opts.W || 1000, hf = opts.hf || 30, padL = opts.padL || 180, padR = conPct ? 112 : 46;
   const filas = datos.length || 1, alto = filas * hf + 8;
   const max = Math.max(1, ...datos.map(x => x.d + x.i));
   const px = v => (W - padL - padR) * v / max;
@@ -2601,7 +2670,7 @@ function svgBarrasH(datos, opts){          // datos: [{lbl, d, i}] apiladas
       <rect class="bar-d" x="${padL}" y="${y}" width="${px(x.d)}" height="${h}"/>
       <rect class="bar-i" x="${padL + px(x.d)}" y="${y}" width="${px(x.i)}" height="${h}"/>
       ${px(x.d) > 22 ? `<text class="valw" x="${padL + px(x.d) - 5}" y="${y + h/2 + 4}" text-anchor="end">${x.d}</text>` : ''}
-      <text class="val" x="${padL + px(tot) + 6}" y="${y + h/2 + 4}">${tot}</text>`;
+      <text class="val" x="${padL + px(tot) + 6}" y="${y + h/2 + 4}">${tot}${conPct && tot ? `<tspan class="pcth" dx="8">${Math.round(x.d / tot * 100)}%</tspan>` : ''}</text>`;
   }).join('');
   return `<svg class="chart" viewBox="0 0 ${W} ${alto}" role="img">${cuerpo}</svg>`;
 }
@@ -2611,6 +2680,19 @@ function leyenda(items){
     `<span><i style="background:${c}"></i>${esc(t)}</span>`).join('') + `</div>`;
 }
 
+
+function realzarPct(root){
+  root.querySelectorAll('.nota, .anlist li, .expk small').forEach(el => {
+    const tw = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    const nodos = []; let n;
+    while((n = tw.nextNode())) if(/\d\s?%/.test(n.nodeValue) && !n.parentElement.closest('.pcg')) nodos.push(n);
+    nodos.forEach(t => {
+      const span = document.createElement('span');
+      span.innerHTML = esc(t.nodeValue).replace(/(\d+(?:[.,]\d+)?\s?%)/g, '<span class="pcg">$1</span>');
+      t.replaceWith(...span.childNodes);
+    });
+  });
+}
 /* filtros propios de la pestaña de gráficas, sobre el mismo estado F */
 function filasGraf(){                       // respeta filtros pero NO el periodo seleccionado
   const q = norm(F.q);
@@ -2618,7 +2700,7 @@ function filasGraf(){                       // respeta filtros pero NO el period
     (!F.zona  || r.zona  === F.zona) &&
     (!F.afec  || r.afec  === F.afec) &&
     (!F.campo || r.campo === F.campo) &&
-    (!F.hecho || r.hecho === F.hecho) &&
+    (!F.hecho.length || F.hecho.includes(r.hecho)) &&
     (!F.dpto  || r.dpto  === F.dpto) &&
     (!F.mpalm || r.mpalm === F.mpalm) &&
     (!F.dpalm || r.dpalm === F.dpalm) &&
@@ -2677,16 +2759,17 @@ function renderGraficas(){
     : universo.filter(r => enPeriodo(r[col], MONTH));
   const etiquetaPer = (MONTH === 'ALL' && fechasActivas()) ? etiquetaFechas(F.desde, F.hasta) : perEtiqueta(MONTH);
 
-  ['gZona','gAfec','gCampo','gHecho','gDpto','gMpalm','gDpalm','gActor'].forEach((id,k) =>
-    fillSelect(id, ['zona','afec','campo','hecho','dpto','mpalm','dpalm','actor'][k], ALL,
-               ['Todas','Todas','Todos','Todos','Todos','Todos','Todos','Todos'][k]));
+  ['gZona','gAfec','gCampo','gDpto','gMpalm','gDpalm','gActor'].forEach((id,k) =>
+    fillSelect(id, ['zona','afec','campo','dpto','mpalm','dpalm','actor'][k], ALL,
+               ['Todas','Todas','Todos','Todos','Todos','Todos','Todos'][k]));
   llenarMunicipios('g', MONTH === 'ALL' ? ALL : ALL.filter(r => enPeriodo(r[col], MONTH)));
   document.getElementById('gcount').textContent =
     `${delPeriodo.length} hechos en ${etiquetaPer}` + (universo.length !== ALL.length ? ` · ${universo.length} de ${ALL.length} tras filtros` : '');
 
   // chips compartidos
   const chips = [];
-  ['zona','afec','campo','hecho','dpto','mpalm','dpalm','actor'].forEach(k => { if(F[k]) chips.push(
+  if(F.hecho.length) chips.push(`<span class="chip">hechos: <b>${esc(F.hecho.join(', '))}</b><button data-clear="hecho" aria-label="Quitar filtro">×</button></span>`);
+  ['zona','afec','campo','dpto','mpalm','dpalm','actor'].forEach(k => { if(F[k]) chips.push(
     `<span class="chip">${k === 'afec' ? 'afectación' : k === 'mpalm' ? 'municipio palmero'
        : k === 'dpalm' ? 'departamento palmero' : k}: <b>${esc(F[k])}</b><button data-clear="${k}" aria-label="Quitar filtro">×</button></span>`); });
   if(F.q) chips.push(`<span class="chip">Texto: <b>${esc(F.q)}</b><button data-clear="q" aria-label="Quitar filtro">×</button></span>`);
@@ -2822,7 +2905,7 @@ function renderGraficas(){
   const top = Object.entries(tm).map(([k,v]) => ({lbl:k.split(' · ')[0], dpto:k.split(' · ')[1], d:v.d, i:v.i}))
                     .sort((a,b) => (b.d+b.i) - (a.d+a.i)).slice(0,10);
   document.getElementById('gTop').innerHTML = top.length ? `
-    ${svgBarrasH(top, {hf:34, padL:230, W:1000})}
+    ${svgBarrasH(top, {hf:34, padL:230, W:1000, pct:true})}
     ${leyenda([['#C2410C','Afectación directa'],['#A9AE93','Afectación indirecta']])}
     <div class="nota">${esc(top[0].lbl)} (${esc(top[0].dpto)}) concentra <b>${top[0].d + top[0].i}</b> hechos en ${etiquetaPer},
       de los cuales <b>${top[0].d}</b> afectan directamente al sector. Los diez municipios listados suman
@@ -2835,7 +2918,7 @@ function renderGraficas(){
   const topH = Object.entries(th).map(([k,v]) => ({lbl:k.length > 30 ? k.slice(0,29) + '…' : k, d:v.d, i:v.i}))
                      .sort((a,b) => (b.d+b.i) - (a.d+a.i)).slice(0,10);
   document.getElementById('gHechos').innerHTML = topH.length
-    ? svgBarrasH(topH, {hf:26, padL:190, W:540}) + leyenda([['#C2410C','Directa'],['#A9AE93','Indirecta']])
+    ? svgBarrasH(topH, {hf:28, padL:190, W:540, pct:true}) + leyenda([['#C2410C','Directa'],['#A9AE93','Indirecta']])
     : '<div class="empty" style="padding:26px">Sin datos.</div>';
 
   /* ---- 6. campo afectado ---- */
@@ -2843,7 +2926,7 @@ function renderGraficas(){
   delPeriodo.forEach(r => { tc[r.campo] = tc[r.campo] || {d:0,i:0}; r.afec === 'DIRECTA' ? tc[r.campo].d++ : tc[r.campo].i++; });
   const topC = Object.entries(tc).map(([k,v]) => ({lbl:k, d:v.d, i:v.i})).sort((a,b) => (b.d+b.i) - (a.d+a.i));
   document.getElementById('gCampos').innerHTML = topC.length
-    ? svgBarrasH(topC, {hf:30, padL:140, W:540}) + leyenda([['#C2410C','Directa'],['#A9AE93','Indirecta']])
+    ? svgBarrasH(topC, {hf:30, padL:140, W:540, pct:true}) + leyenda([['#C2410C','Directa'],['#A9AE93','Indirecta']])
     : '<div class="empty" style="padding:26px">Sin datos.</div>';
 
 
@@ -2887,10 +2970,17 @@ function renderGraficas(){
     const h = porHecho[r.hecho] = porHecho[r.hecho] || {n:0, mun:new Set()};
     h.n++; h.mun.add(r.munKey);
   });
+  const dirPorHecho = {};
+  delPeriodo.forEach(r => { if(r.afec === 'DIRECTA') dirPorHecho[r.hecho] = (dirPorHecho[r.hecho] || 0) + 1; });
   const filasH = Object.entries(porHecho).map(([h,v]) => {
     let p = 0, ha = 0; v.mun.forEach(k => { const x = PALM_MUN[k]; if(x){ p += x.p; ha += x.ha; } });
-    return {h, n:v.n, m:v.mun.size, p, ha};
-  }).sort((a,b) => b.ha - a.ha).slice(0, 15);
+    return {h, n:v.n, d:dirPorHecho[h] || 0, m:v.mun.size, p, ha};
+  });
+  const cmp = {h:(a,b) => a.h.localeCompare(b.h,'es'), n:(a,b) => a.n - b.n, m:(a,b) => a.m - b.m,
+               p:(a,b) => a.p - b.p, ha:(a,b) => a.ha - b.ha};
+  filasH.sort((a,b) => ORD_H.dir * cmp[ORD_H.col](a,b) || b.ha - a.ha);
+  const thH = (col, txt) => `<th data-ord="${col}" class="ord${ORD_H.col === col ? ' on' : ''}">${txt}${
+    ORD_H.col === col ? (ORD_H.dir < 0 ? ' ▾' : ' ▴') : ''}</th>`;
 
   const topMun = [...munTodos.entries()].map(([k,n]) => ({k, n, d:munDir.get(k) || 0, x:PALM_MUN[k]}))
     .filter(o => o.x).sort((a,b) => b.x.ha - a.x.ha).slice(0, 10);
@@ -2904,11 +2994,15 @@ function renderGraficas(){
       <div class="d"><b>${fmtN(eD.ha)} ha</b><small>en municipios con afectación directa · ${pctH(eD.ha)}%</small></div>
     </div>
     <div class="resumen2" style="align-items:start;padding-top:0">
-      <div class="r-tabla"><div class="eyebrow" style="margin:0 0 7px">Por tipo de hecho (15 con más hectáreas)</div><div class="tablewrap">
+      <div class="r-tabla"><div class="eyebrow" style="margin:0 0 7px">Palmicultores y hectáreas por hecho
+          (${filasH.length} hechos · clic en un título para ordenar)</div><div class="tablewrap porhecho">
         <table class="gtab">
-          <thead><tr><th>Hecho</th><th>Hechos</th><th>Municipios</th><th>Palmicultores</th><th>Hectáreas</th></tr></thead>
+          <thead><tr>${thH('h','Hecho')}${thH('n','Hechos')}${thH('m','Munic.')}${thH('p','Palmicultores')}<th>% palm.</th>${thH('ha','Hectáreas')}<th>% ha</th></tr></thead>
           <tbody>${filasH.map(x => `<tr><td>${esc(x.h)}</td><td>${x.n}</td><td>${x.m}</td>
-            <td>${fmtN(x.p)}</td><td>${fmtN(x.ha)}</td></tr>`).join('')}</tbody>
+            <td>${fmtN(x.p)}</td><td class="pp">${pctP(x.p)}%</td><td>${fmtN(x.ha)}</td><td class="pp">${pctH(x.ha)}%</td></tr>`).join('')}
+            <tr class="tot"><td>${F.hecho.length > 1 ? 'Conjunto seleccionado' : 'Total'} <small>(municipios sin duplicar)</small></td>
+              <td>${delPeriodo.length}</td><td>${munTodos.size}</td><td>${fmtN(eT.p)}</td><td class="pc">${pctP(eT.p)}%</td>
+              <td>${fmtN(eT.ha)}</td><td class="pc">${pctH(eT.ha)}%</td></tr></tbody>
         </table></div></div>
       <div class="r-tabla"><div class="eyebrow" style="margin:0 0 7px">Municipios con más hectáreas y hechos</div><div class="tablewrap">
         <table class="gtab">
@@ -2919,7 +3013,8 @@ function renderGraficas(){
     </div>
     <div class="nota" style="margin-top:10px">Las cifras corresponden a los palmicultores y hectáreas sembradas registrados
       en el municipio donde ocurrió cada hecho, no a hectáreas dañadas: un hecho en una vereda no compromete todo el
-      municipio. En la tabla por tipo de hecho cada municipio se cuenta una vez por tipo, aunque haya varios hechos.
+      municipio. En la tabla por hecho cada municipio se cuenta una vez por tipo de hecho; por eso la suma de las filas
+      supera el total, que cuenta cada municipio una sola vez. Los porcentajes son sobre el total de palmicultores y hectáreas del país.
       Base: ${fmtN(PALM_TOT.p)} palmicultores y ${fmtN(PALM_TOT.ha)} ha en ${PALM_TOT.mun} municipios${
       PALM_DATA.corte ? ' (registro de palmicultores con corte al ' + corteTexto(PALM_DATA.corte) + ')' : ''}.
       ${eT.c < munTodos.size ? `${munTodos.size - eT.c} de los ${munTodos.size} municipios con hechos no tienen palmicultores en la tabla.` : ''}</div>`
@@ -3010,6 +3105,7 @@ function renderGraficas(){
     : '<div class="empty" style="padding:26px">Sin datos del año.</div>';
 
   renderAnalisis(universo);
+  realzarPct(document.getElementById('viewGraf'));
 }
 
 
@@ -3262,7 +3358,7 @@ function cambiarVista(v){
 document.querySelector('.tabbar').addEventListener('click', e => {
   const b = e.target.closest('.tab'); if(b) cambiarVista(b.dataset.v);
 });
-[['gZona','zona'],['gAfec','afec'],['gCampo','campo'],['gHecho','hecho'],['gDpto','dpto'],['gMpalm','mpalm'],['gDpalm','dpalm'],['gActor','actor']].forEach(([id,k]) =>
+[['gZona','zona'],['gAfec','afec'],['gCampo','campo'],['gDpto','dpto'],['gMpalm','mpalm'],['gDpalm','dpalm'],['gActor','actor']].forEach(([id,k]) =>
   document.getElementById(id).addEventListener('change', e => {
     F[k] = e.target.value; if(k === 'mpalm') SELMUNI = null;
     const esp = document.getElementById('f' + id.slice(1)); if(esp) esp.value = F[k];
@@ -3274,15 +3370,16 @@ let gqt; document.getElementById('gQ').addEventListener('input', e => {
 });
 document.getElementById('gCampoHechos').addEventListener('click', e => {
   const li = e.target.closest('li[data-h]'); if(!li) return;
-  F.hecho = F.hecho === li.dataset.h ? '' : li.dataset.h;
+  const h = li.dataset.h;
+  F.hecho = F.hecho.includes(h) ? F.hecho.filter(x => x !== h) : [...F.hecho, h];
   renderGraficas(); render();
 });
 document.getElementById('gchips').addEventListener('click', e => {
   const b = e.target.closest('button'); if(!b) return;
-  if(b.id === 'gclearAll'){ Object.keys(F).forEach(k => F[k] = ''); SELMUNI = null; document.getElementById('gQ').value = ''; document.getElementById('fQ').value = ''; }
+  if(b.id === 'gclearAll'){ limpiarF(); SELMUNI = null; document.getElementById('gQ').value = ''; document.getElementById('fQ').value = ''; }
   else if(b.dataset.clear === 'MUNI'){ SELMUNI = null; }
   else if(b.dataset.clear === 'q'){ F.q = ''; document.getElementById('gQ').value = ''; document.getElementById('fQ').value = ''; }
-  else F[b.dataset.clear] = '';
+  else F[b.dataset.clear] = (b.dataset.clear === 'hecho' ? [] : '');
   renderGraficas(); render();
 });
 
@@ -3432,7 +3529,7 @@ function combo(id){
   sel.addEventListener('change', sync);
   sync();
 }
-['fDpto','fMuni','fHecho','fActor'].forEach(combo);
+['fDpto','fMuni','fActor'].forEach(combo);
 
 
 /* ---- actualización mensual de palmicultores ---- */
@@ -3526,6 +3623,139 @@ async function detectarPalmeros(){
   }catch(e){}
 }
 
+
+/* ============ selección múltiple de hechos (agrupados por campo) ============ */
+let HECHO_SOLO_SEL = false;
+function llenarHechos(base){
+  const btn = document.getElementById('fHechoTxt');
+  const box = document.getElementById('fHechoBox');
+  const n = F.hecho.length;
+  btn.innerHTML = n === 0 ? '<span>Todos</span>'
+    : n === 1 ? `<span>${esc(F.hecho[0])}</span>`
+    : `<span><b>${n}</b>${esc(F.hecho.join(', '))}</span>`;
+  btn.title = n ? F.hecho.join(', ') : '';
+  box.classList.toggle('lleno', n > 0);
+  BASE_HECHOS = base;
+  if(!document.getElementById('fHechoPop').hidden) pintarHechos();
+}
+let BASE_HECHOS = [];
+function pintarHechos(){
+  const q = sinTilde(document.getElementById('fHechoQ').value.trim());
+  // conteos con el resto de filtros aplicados, sin el propio filtro de hechos
+  const guard = F.hecho; F.hecho = [];
+  const filas = applyFilters(BASE_HECHOS);
+  F.hecho = guard;
+  const cuenta = {}, campoDe = {};
+  filas.forEach(r => { cuenta[r.hecho] = (cuenta[r.hecho] || 0) + 1; });
+  const votos = {};
+  ALL.forEach(r => { const v = votos[r.hecho] = votos[r.hecho] || {}; v[r.campo] = (v[r.campo] || 0) + 1; });
+  Object.entries(votos).forEach(([h,v]) => campoDe[h] = Object.entries(v).sort((a,b) => b[1] - a[1])[0][0]);
+  F.hecho.forEach(h => { if(!(h in cuenta)) cuenta[h] = 0; });
+  const grupos = {};
+  Object.keys(cuenta).forEach(h => {
+    if(q && !sinTilde(h).includes(q)) return;
+    if(HECHO_SOLO_SEL && !F.hecho.includes(h)) return;
+    (grupos[campoDe[h] || 'Sin campo'] = grupos[campoDe[h] || 'Sin campo'] || []).push(h);
+  });
+  const orden = Object.keys(grupos).sort((a,b) => a.localeCompare(b,'es'));
+  document.getElementById('fHechoList').innerHTML = orden.length ? orden.map(c => {
+    const hs = grupos[c].sort((a,b) => (cuenta[b] - cuenta[a]) || a.localeCompare(b,'es'));
+    const todos = hs.every(h => F.hecho.includes(h)), algunos = hs.some(h => F.hecho.includes(h));
+    return `<label class="multi-grp" data-campo="${esc(c)}"><input type="checkbox" ${todos ? 'checked' : ''}
+        data-mixto="${!todos && algunos}"> ${esc(c)}</label>` +
+      hs.map(h => `<label class="multi-op"><input type="checkbox" data-h="${esc(h)}" ${F.hecho.includes(h) ? 'checked' : ''}>
+        <span>${resaltar(h, document.getElementById('fHechoQ').value.trim())}</span><i>${cuenta[h]}</i></label>`).join('');
+  }).join('') : '<div class="multi-vacio">Sin coincidencias</div>';
+  document.querySelectorAll('#fHechoList input[data-mixto="true"]').forEach(x => x.indeterminate = true);
+  document.getElementById('fHechoVer').setAttribute('aria-pressed', HECHO_SOLO_SEL);
+}
+function aplicarHechos(){
+  const lista = document.getElementById('fHechoList'), scroll = lista.scrollTop;
+  render(); if(VISTA === 'graf') renderGraficas();
+  pintarHechos();
+  lista.scrollTop = scroll;                                  // la lista no salta al marcar
+  if(!document.getElementById('fHechoPop').hidden && !document.activeElement.closest('#fHechoPop'))
+    document.getElementById('fHechoQ').focus({preventScroll:true});
+}
+function abrirHechos(v){
+  const pop = document.getElementById('fHechoPop');
+  pop.hidden = !v;
+  document.getElementById('fHechoTxt').setAttribute('aria-expanded', v);
+  if(v){ pintarHechos(); document.getElementById('fHechoQ').focus(); }
+}
+document.getElementById('fHechoTxt').addEventListener('click', () => abrirHechos(document.getElementById('fHechoPop').hidden));
+document.getElementById('fHechoQ').addEventListener('input', pintarHechos);
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape' && !document.getElementById('fHechoPop').hidden){ abrirHechos(false); document.getElementById('fHechoTxt').focus(); }
+});
+document.getElementById('fHechoVer').addEventListener('click', () => { HECHO_SOLO_SEL = !HECHO_SOLO_SEL; pintarHechos(); });
+document.getElementById('fHechoLimpiar').addEventListener('click', () => { F.hecho = []; aplicarHechos(); });
+document.getElementById('fHechoList').addEventListener('change', e => {
+  const x = e.target; if(x.type !== 'checkbox') return;
+  if(x.dataset.h){
+    const h = x.dataset.h;
+    F.hecho = x.checked ? [...new Set([...F.hecho, h])] : F.hecho.filter(v => v !== h);
+  }else{
+    const hs = [];
+    for(let el = x.closest('.multi-grp').nextElementSibling; el && el.classList.contains('multi-op'); el = el.nextElementSibling)
+      hs.push(el.querySelector('input').dataset.h);
+    F.hecho = x.checked ? [...new Set([...F.hecho, ...hs])] : F.hecho.filter(v => !hs.includes(v));
+  }
+  aplicarHechos();
+});
+document.addEventListener('click', e => {
+  if(document.getElementById('fHechoPop').hidden) return;
+  if(!e.target.closest('#fHechoBox')) abrirHechos(false);
+});
+
+
+/* ============ contador de ingresos (requiere la API en Azure Static Web Apps) ============ */
+function idVisitante(){
+  try{
+    let id = localStorage.getItem('monitor_vid');
+    if(!id){ id = (crypto.randomUUID ? crypto.randomUUID() : 'v-' + Date.now().toString(36) + Math.random().toString(36).slice(2));
+             localStorage.setItem('monitor_vid', id); }
+    return id;
+  }catch(e){ return null; }
+}
+function registrarIngreso(){
+  if(!/^https?:/.test(location.protocol)) return;
+  try{ if(sessionStorage.getItem('monitor_ingreso')) return; sessionStorage.setItem('monitor_ingreso', '1'); }catch(e){}
+  fetch('api/visitas', {method:'POST', headers:{'Content-Type':'application/json'},
+                        body: JSON.stringify({v: idVisitante()}), keepalive:true}).catch(() => {});
+}
+async function cargarIngresos(){
+  const caja = document.getElementById('ingresos');
+  const cab = `<h4>Ingresos a la plataforma <button type="button" class="ghostbtn" id="ingRefrescar">Actualizar</button></h4>`;
+  if(!/^https?:/.test(location.protocol)){
+    caja.innerHTML = cab + '<div class="ing-msg">El contador funciona cuando la página está publicada en Azure Static Web Apps con la carpeta <b>api</b>.</div>';
+    return;
+  }
+  caja.innerHTML = cab + '<div class="ing-msg">Consultando…</div>';
+  try{
+    const r = await fetch('api/visitas', {cache:'no-store'});
+    if(r.status === 401 || r.status === 403){
+      caja.innerHTML = cab + '<div class="ing-msg">Su cuenta no tiene el rol <b>administrador</b>; solo los administradores ven el contador.</div>'; return;
+    }
+    if(!r.ok || !(r.headers.get('content-type') || '').includes('json')) throw new Error(r.status);
+    const d = await r.json();
+    const max = Math.max(1, ...d.dias.map(x => x.n));
+    caja.innerHTML = cab + `<div class="ing-k">
+        <div><b>${fmtN(d.total)}</b><small>ingresos totales${d.desde ? ' desde ' + fmtYMD(d.desde) : ''}</small></div>
+        <div><b>${fmtN(d.hoy)}</b><small>hoy</small></div>
+        <div><b>${fmtN(d.ult7)}</b><small>últimos 7 días</small></div>
+        <div><b>${fmtN(d.ult30)}</b><small>últimos 30 días</small></div>
+        <div><b>${fmtN(d.visitantes)}</b><small>navegadores distintos</small></div>
+        <div><b>${fmtN(d.activos30)}</b><small>activos en 30 días</small></div>
+      </div>
+      <div class="ing-spark" title="Ingresos por día, últimos 30 días">${d.dias.map(x =>
+        `<i style="height:${Math.max(3, x.n / max * 100)}%" title="${fmtYMD(x.d)}: ${x.n}"></i>`).join('')}</div>`;
+  }catch(e){
+    caja.innerHTML = cab + '<div class="ing-msg">El contador aún no está activo en este sitio. Se activa al publicar en Azure Static Web Apps con la carpeta <b>api</b> y la configuración <b>TABLAS_CONEXION</b>.</div>';
+  }
+}
+document.addEventListener('click', e => { if(e.target.id === 'ingRefrescar') cargarIngresos(); });
+
 /* ============ administración ============ */
 const ADMIN_KEY = 'palma2026';   // cambie esta clave antes de distribuir el archivo
 
@@ -3534,6 +3764,7 @@ function setAdmin(on){
   document.getElementById('adminbar').hidden = !on;
   document.getElementById('btnAdmin').textContent = on ? 'Administrando' : 'Modo administrador';
   renderAdminMonths();
+  if(on) cargarIngresos();
 }
 function markDirty(v){
   DIRTY = v;
@@ -3695,7 +3926,7 @@ function loadFile(file){
               .sort((a,b) => a.fecha - b.fecha);
       DIAG += `\nMeses incorporados: ${meses.map(ymLabel).join(', ')} (reemplazan cualquier carga previa del mismo mes).`;
       MONTH = meses.sort()[meses.length-1];
-      SELMUNI = null; Object.keys(F).forEach(k => F[k] = '');
+      SELMUNI = null; limpiarF();
       document.getElementById('fQ').value = '';
       markDirty(true);
       buildMonths(); render(); renderAdminMonths();
@@ -3735,7 +3966,7 @@ document.getElementById('btnSave').addEventListener('click', () => {
   c.querySelector('#dataset').textContent = JSON.stringify(payload);
   c.querySelector('#informes').textContent = JSON.stringify(INFORMES);
   c.querySelector('#palmeros').textContent = JSON.stringify(PALM_DATA);
-  ['#reg','#kpis','#months','#chips','#bdZona','#bdHecho','#warnbox','#adminmonths','#srcnote']
+  ['#reg','#kpis','#months','#chips','#bdZona','#bdHecho','#warnbox','#adminmonths','#srcnote','#ingresos']
     .forEach(sel => { const el = c.querySelector(sel); if(el) el.innerHTML = ''; });
   const mp = c.querySelector('#map');
   if(mp){ mp.innerHTML = ''; mp.className = ''; mp.removeAttribute('style'); mp.removeAttribute('tabindex'); }
@@ -3772,6 +4003,7 @@ if(ultimoMes) MONTH = ultimoMes;
 buildMonths(); render(); renderAdminMonths();
 detectarInformes();
 detectarPalmeros();
+registrarIngreso();
 </script>
 </body>
 </html>
