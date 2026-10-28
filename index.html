@@ -786,9 +786,9 @@ header{
 .reportbtn:hover{background:#B87A14}
 .pesoinf{font-size:11px;color:#CDB57A;margin-left:2px}
 /* visor de informes */
-.visor{position:fixed;inset:0;z-index:5000;display:flex;align-items:center;justify-content:center;padding:24px;
+.visor{position:fixed;inset:0;z-index:5000;display:flex;align-items:center;justify-content:center;padding:2vh 2vw;
   background:rgba(20,24,16,.62);backdrop-filter:blur(2px)}
-.visor-caja{display:flex;flex-direction:column;width:min(980px,100%);height:min(88vh,1100px);background:#2B3123;
+.visor-caja{display:flex;flex-direction:column;width:min(1500px,100%);height:100%;background:#2B3123;
   border-radius:6px;overflow:hidden;box-shadow:0 18px 60px rgba(0,0,0,.45)}
 .visor-barra{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;background:var(--palm-deep);color:#fff;
   border-bottom:3px solid var(--ochre);flex-wrap:wrap}
@@ -816,8 +816,7 @@ header{
 .visor-msg .visor-btn{margin-top:14px}
 body.visor-abierto{overflow:hidden}
 @media (max-width:640px){
-  .visor{padding:10px}
-  .visor-caja{height:92vh}
+  .visor{padding:6px}
   .visor-barra{padding:8px 10px;gap:8px}
   .visor-tit b{font-size:15px}
   .visor-btn{padding:7px 10px;font-size:10.5px}
@@ -1267,7 +1266,7 @@ main>*,#viewGraf>*,.gcols>*{min-width:0}
 .it-loc{font-family:'IBM Plex Mono',ui-monospace,'SF Mono',Consolas,monospace;font-size:11px;color:var(--palm-deep);font-weight:500}
 .empty{padding:40px 20px;text-align:center;color:var(--ink-soft)}
 .empty strong{display:block;font-family:'Archivo','Helvetica Neue',Arial,sans-serif;font-size:15px;color:var(--ink);margin-bottom:5px}
-.regsum{border-bottom:1px solid var(--rule);border-left:4px solid var(--palm);background:#F7F8F1;padding:10px 14px 9px}
+.regsum{border-top:2px solid var(--palm);border-left:4px solid var(--palm);background:#F7F8F1;padding:10px 14px 9px}
 .rs-h{display:flex;flex-direction:column;gap:1px;margin-bottom:8px}
 .rs-t{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
 .rs-t b{font-family:'Archivo','Helvetica Neue',Arial,sans-serif;font-size:15px;font-weight:800;color:var(--palm-deep)}
@@ -1484,8 +1483,8 @@ main>*,#viewGraf>*,.gcols>*{min-width:0}
   <div style="display:grid;gap:16px;min-width:0">
     <section class="panel">
       <div class="panel-h"><h2>Registro de hechos</h2><span class="count" id="regcount"></span></div>
-      <div id="regsum"></div>
       <div class="reg" id="reg"></div>
+      <div id="regsum"></div>
     </section>
 
     <section class="panel">
@@ -4069,7 +4068,7 @@ async function pintarConPdfJs(fuente){
     if(tarea === VISOR.tarea) sinVisor(cuerpo, 'No fue posible mostrar el informe en este dispositivo.');
   }
 }
-function anchoBase(){ return Math.min(900, document.getElementById('visorCuerpo').clientWidth - 20); }
+function anchoBase(){ return Math.min(1400, document.getElementById('visorCuerpo').clientWidth - 20); }
 function dimensionarPaginas(){
   const w = anchoBase() * VISOR.zoom;
   document.querySelectorAll('#visorPaginas .visor-pag').forEach(el => {
