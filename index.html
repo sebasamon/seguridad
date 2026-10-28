@@ -881,12 +881,12 @@ body.visor-abierto{overflow:hidden}
 .tab[aria-pressed="true"]{color:#fff;background:#3A4429;border-bottom-color:var(--ochre)}
 #viewGraf{max-width:1680px;margin:0 auto;padding:16px 20px 40px;display:grid;gap:16px}
 .gcols{display:grid;gap:16px;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
-@media(max-width:1050px){.gcols{grid-template-columns:1fr}}
+@media(max-width:1050px){.gcols{grid-template-columns:minmax(0,1fr)}}
 .gfilters .filters{border-bottom:0}
 .chartbox{padding:14px}
 .resumen2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.02fr);gap:10px;
   align-items:center;padding:14px 14px 0}
-@media(max-width:960px){.resumen2{grid-template-columns:1fr;padding-bottom:4px}}
+@media(max-width:960px){.resumen2{grid-template-columns:minmax(0,1fr);padding-bottom:4px}}
 .resumen2 .r-chart .chart{padding:0}
 .resumen2 .r-chart .leyx{padding:8px 0 0}
 .chart{width:100%;height:auto;display:block;overflow:visible;padding:12px 14px 4px}
@@ -1173,7 +1173,7 @@ body.visor-abierto{overflow:hidden}
 main{max-width:1680px;margin:0 auto;padding:10px 20px 40px;
   display:grid;gap:16px;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);align-items:start}
 main>*,#viewGraf>*,.gcols>*{min-width:0}
-@media(max-width:1050px){main{grid-template-columns:1fr}}
+@media(max-width:1050px){main{grid-template-columns:minmax(0,1fr)}}
 
 .panel{background:var(--paper-2);border:1px solid var(--rule);border-radius:3px;min-width:0}
 .panel-h{
@@ -1324,6 +1324,40 @@ main>*,#viewGraf>*,.gcols>*{min-width:0}
   main{display:block;max-width:none;padding:0}
   .mapwrap{position:static;page-break-after:always}
   .reg{max-height:none;overflow:visible}
+}
+/* ---------- celulares ---------- */
+.ley-tog{display:none}
+@media(max-width:640px){
+  .banner .bar{padding:14px 14px 12px;gap:8px 10px}
+  .banner .brand h1{font-size:17px}
+  .brand span{font-size:9px;letter-spacing:.1em}
+  .banner .srcnote{display:none}
+  .banner .reportbtn{padding:8px 12px;font-size:10.5px}
+  .banner .ghostbtn{padding:7px 10px;font-size:10px}
+  .monthrail-in{padding:8px 12px}
+  .prange{display:none}
+  .granbox{order:0;margin-right:0}
+  .pall{order:1;flex:1;padding:7px 8px;font-size:10px;letter-spacing:.06em}
+  .pnav{order:2}
+  .fechas{order:3}
+  .banner .brand{flex-basis:100%}
+  .tabbar-in{padding:0 8px;gap:0}
+  .tab{flex:1;justify-content:center;padding:10px 6px 8px;font-size:10.5px;letter-spacing:.06em;white-space:nowrap}
+  .kpis{padding:12px 12px 4px;gap:8px;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kpi{padding:10px 11px}
+  .kpi .v{font-size:24px}
+  .kpi .pct{font-size:15px;margin-left:5px}
+  main,#viewGraf{padding-left:12px;padding-right:12px}
+  #map{height:min(62vh,520px)}
+  .reg{max-height:70vh}
+  .ley-tog{display:block;width:100%;background:none;border:0;padding:0;text-align:left;cursor:pointer;
+    font-family:'Archivo','Helvetica Neue',Arial,sans-serif;font-weight:700;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+  .ley-tog::after{content:" ▾"}
+  .legend.abierta .ley-tog{margin-bottom:6px}
+  .legend.abierta .ley-tog::after{content:" ▴"}
+  .legend:not(.abierta) .ley-cuerpo{display:none}
+  .legend{padding:7px 10px}
+  .panel-h{padding-left:12px;padding-right:12px}
 }
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -2046,7 +2080,7 @@ const F = {zona:'', afec:'', campo:'', hecho:[], dpto:'', mpalm:'', dpalm:'', ac
 const noGeo = new Set();
 
 /* ============ mapa ============ */
-const map = L.map('map', {zoomControl:true, attributionControl:false, scrollWheelZoom:true, minZoom:4, maxZoom:13})
+const map = L.map('map', {zoomControl:true, attributionControl:false, scrollWheelZoom:true, minZoom:3.5, maxZoom:13, zoomSnap:0.25, zoomDelta:0.5})
              .setView([5.4,-73.4], 5.3);
 
 const ZONE_COLORS = ['#515B22','#7C8B3A','#A8A05A','#C08A2E','#6E7C6A','#8C7C52','#9AA089'];
@@ -2250,10 +2284,17 @@ function drawMarkers(rows){
   return bounds;
 }
 
+document.addEventListener('click', e => {
+  const b = e.target.closest('.ley-tog'); if(!b) return;
+  const el = document.getElementById('legend');
+  const v = !el.classList.contains('abierta');
+  el.classList.toggle('abierta', v); b.setAttribute('aria-expanded', v);
+}, true);
 function drawLegend(zones, numerandoAhora){
   const el = document.getElementById('legend');
   if(!el) return;
-  el.innerHTML =
+  const abierta = el.classList.contains('abierta');
+  el.innerHTML = `<button type="button" class="ley-tog" aria-expanded="${abierta}">Leyenda</button><div class="ley-cuerpo">` +
     `<div class="eyebrow" style="margin-bottom:5px">Afectación</div>
      <div class="row"><svg class="sw" viewBox="-8 -8 16 16"><path d="M0,-7 L2.2,-2.2 L7,0 L2.2,2.2 L0,7 L-2.2,2.2 L-7,0 L-2.2,-2.2 Z" fill="#C2410C" stroke="#fff" stroke-width="1.2"/></svg> Directa a palmicultores</div>
      <div class="row"><svg class="sw" viewBox="-8 -8 16 16"><circle r="7" fill="#6E7460" stroke="#fff" stroke-width="1.2"/></svg> Indirecta</div>
@@ -2261,7 +2302,7 @@ function drawLegend(zones, numerandoAhora){
     zones.map(z => `<div class="row"><span class="sw" style="background:${zoneColor[z]};opacity:.75;border:1px solid rgba(0,0,0,.15)"></span> ${esc(z)}</div>`).join('') +
     `<hr><div style="font-size:10.5px;color:#7E8375;max-width:195px">${numerandoAhora
        ? 'El número es el consecutivo de cada hecho en el registro. Quite el filtro de municipio para volver a la vista agrupada.'
-       : 'El número es la cantidad de hechos del municipio. Haga clic en un marcador para ver el consecutivo de cada hecho.'}</div>`;
+       : 'El número es la cantidad de hechos del municipio. Haga clic en un marcador para ver el consecutivo de cada hecho.'}</div></div>`;
 }
 
 /* ============ filtros ============ */
@@ -2747,9 +2788,10 @@ document.addEventListener('click', e => {
   renderGraficas();
 });
 
+const MOVIL = () => window.innerWidth < 640;
 function svgBarrasV(datos, opts){          // datos: [{lbl, a, b}]
   const conPct = opts.pct !== false;
-  const W = opts.W || 1000, alto = (opts.alto || 250) + (conPct ? 18 : 0), padL = 34, padR = 10, padB = opts.padB || 30, padT = conPct ? 42 : 22;
+  const W = MOVIL() ? Math.min(opts.W || 1000, 400) : (opts.W || 1000), alto = (opts.alto || 250) + (conPct ? 18 : 0), padL = 34, padR = 10, padB = opts.padB || 30, padT = conPct ? 42 : 22;
   const n = datos.length || 1;
   const max = opts.max || Math.max(1, ...datos.map(d => Math.max(d.a, d.b)));
   const paso = (W - padL - padR) / n;
@@ -2776,7 +2818,10 @@ function svgBarrasV(datos, opts){          // datos: [{lbl, a, b}]
 
 function svgBarrasH(datos, opts){          // datos: [{lbl, d, i}] apiladas
   const conPct = !!opts.pct;
-  const W = opts.W || 1000, hf = opts.hf || 30, padL = opts.padL || 180, padR = conPct ? 112 : 46;
+  const mov = MOVIL();
+  const W = mov ? Math.min(opts.W || 1000, 420) : (opts.W || 1000), hf = opts.hf || 30,
+        padL = mov ? Math.min(opts.padL || 180, 138) : (opts.padL || 180), padR = conPct ? (mov ? 92 : 112) : 46;
+  if(mov) datos = datos.map(x => x.lbl && x.lbl.length > 20 ? {...x, lbl: x.lbl.slice(0, 19) + '…'} : x);
   const filas = datos.length || 1, alto = filas * hf + 8;
   const max = Math.max(1, ...datos.map(x => x.d + x.i));
   const px = v => (W - padL - padR) * v / max;
@@ -3549,6 +3594,14 @@ if(window.innerWidth < 900){                 // en pantallas pequeñas los filtr
   document.getElementById('fToggle').setAttribute('aria-expanded', 'false');
 }
 window.addEventListener('resize', ajustarHdr);
+let ERA_MOVIL = MOVIL(), T_RESIZE = 0;
+window.addEventListener('resize', () => {
+  clearTimeout(T_RESIZE);
+  T_RESIZE = setTimeout(() => {
+    map.invalidateSize();
+    if(MOVIL() !== ERA_MOVIL){ ERA_MOVIL = MOVIL(); if(VISTA === 'graf') renderGraficas(); }
+  }, 200);
+});
 
 
 
